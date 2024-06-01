@@ -1,0 +1,68 @@
+{% extends 'base/header_market.html' %}
+{% load static %}
+{% block content %}
+
+<div class="painting-sale-container">
+    <!-- Sidebar -->
+
+    <div id="sidebar" class="sidebar-class">
+        <hr>
+        <h2 class="gluten">Filters</h2>
+        <!-- Dropdown for painting style -->
+        <div class="filter-option">
+            <label class="gluten" for="style-filter">Style:</label>
+            <select class="gluten" style="height: 22px; text-align: center;" id="painting-filter">
+                <option class="gluten" value="all">All Styles</option>
+                <option class="gluten" value="acrylic">Acrylic Painting</option>
+                <option class="gluten" value="oil">Oil Painting</option>
+                <option class="gluten" value="watercolour">Water Colour Painting</option>
+                <option class="gluten" value="pencilcolour">Pencil Colour Painting</option>
+                <option class="gluten" value="charcoal">Charcoal Painting</option>
+                <option class="gluten" value="pencilpotrait">Pencil Potrait</option>
+                <!-- Add more options for different painting styles -->
+            </select>
+        </div>
+        <hr>
+        <h2 class="gluten">Sort By:</h2>
+        <!-- Radio buttons for sorting -->
+        <div class="sort-option gluten">
+            <label class="gluten"><input type="radio" name="sort" value="price-high-low"> Price: High to Low</label><br>
+            <label class="gluten"><input type="radio" name="sort" value="price-low-high"> Price: Low to High</label><br>
+            <label class="gluten"><input type="radio" name="sort" value="size-low-high"> Size: Low to High</label><br>
+            <label class="gluten"><input type="radio" name="sort" value="size-high-low"> Size: High to Low</label><br>
+        </div>        
+        <hr>
+        <!-- Buttons to submit and clear filters -->
+        <button id="submit-filters" class="btn btn-transparent" style="border:solid;border-width: thin">Submit Filters</button>
+        <button id="clear-filters" class="btn btn-transparent" style="border:solid;border-width: thin">Clear Filters</button>
+    </div>
+    
+    <!-- Main Content: Painting Grid -->
+    <div id="paintings-grid" class="painting-grid">
+    </div>
+</div>
+
+<!-- Add a message prompting users to scroll for more items -->
+<div class="scroll-message text-center" id="scroll-message">
+    <p>Scroll down for more items</p>
+</div>
+<div id="cart-counter">0</div>
+<div class="modal fade" id="pictureModal" tabindex="-1" role="dialog" aria-labelledby="pictureModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header position-relative">
+                <h2 id="modalTitle"></h2>
+                <a id="cross-close" class="position-absolute top-0 end-0 m-3" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times fa-2x" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" class="card-img-top" src="" alt="">
+                <p id="modalDescription"></p>
+                <p id="modalCost"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="current-page" value="1">
+{% endblock content %}

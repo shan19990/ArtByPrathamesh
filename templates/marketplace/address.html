@@ -1,0 +1,89 @@
+{% extends 'base/header_market.html' %}
+{% load socialaccount %}
+{% load static %}
+{% block content %}
+<br>
+<div class="container body">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="text-center mb-3">
+                <button id="AddressButton" class="btn btn-transparent" style="border:solid;border-width: thin" onclick="showAddressForm()">Add Address</button>
+            </div>
+            <div class="card div-transparent" style="display:none;" id="addressForm">
+                <a id ="cross-close" class="position-absolute top-0 end-0 m-3" onclick="closeAddressForm()">
+                    <i class="fa fa-times fa-1x" aria-hidden="true"></i>
+                </a>                
+                <div class="card-body">
+                    <h4 class="card-title">Address Details</h4>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group row">
+                            <label for="street" class="col-sm-3 col-form-label">Street Address:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="street" id="street" placeholder="Street Address" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="city" class="col-sm-3 col-form-label">City:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="city" id="city" placeholder="City" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="state" class="col-sm-3 col-form-label">State/Province:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="state" id="state" placeholder="State/Province" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="postal_code" class="col-sm-3 col-form-label">Postal/ZIP Code:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="postal_code" id="postal_code" placeholder="Postal/ZIP Code" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="phone_number" class="col-sm-3 col-form-label">Contact Phone Number:</label>
+                            <div class="col-sm-9">
+                                <input type="tel" class="form-control" name="phone_number" id="phone_number" placeholder="Contact Phone Number" required>
+                            </div>
+                        </div>
+                        <input type="hidden" id="form-id" name="form">
+                        <br>
+                        <div class="form-group row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-9">
+                                <button type="submit" class="btn btn-transparent" style="border:solid;border-width: thin">Submit</button>
+                                <a onclick="clearAddress()" class="btn btn-transparent" style="border:solid;border-width: thin">&nbspClear&nbsp&nbsp</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+                <div class="card mt-3 div-transparent">
+                    <div class="card-body">
+                        <h4 class="card-title">Saved Addresses</h4>
+                        {% if addresses %}
+                            {% for address in addresses %}
+                                <div class="card mb-3 div-transparent">
+                                    <div class="card-body">
+                                        <p><strong>Street Address:</strong> {{ address.street_address }}</p>
+                                        <p><strong>City:</strong> {{ address.city }}</p>
+                                        <p><strong>State/Province:</strong> {{ address.state }}</p>
+                                        <p><strong>Postal/ZIP Code:</strong> {{ address.pincode }}</p>
+                                        <p><strong>Contact Phone Number:</strong> {{ address.contact }}</p>
+                                        <div role="group" aria-label="Address Actions">
+                                            <a class="btn btn-info btn-sm" onclick="editAddress('{{ address.street_address|escapejs }}', '{{ address.city|escapejs }}', '{{ address.state|escapejs }}', '{{ address.pincode|escapejs }}', '{{ address.contact|escapejs }}', '{{ address.id|escapejs }}')">Edit</a>
+                                            <a href="{% url 'addressdelete' address.id  %}" class="btn btn-danger btn-sm">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No addresses saved yet.</p>
+                        {% endif %}
+                    </div>
+                </div>                
+            </div>            
+        </div>
+</div>
+{% endblock content %}

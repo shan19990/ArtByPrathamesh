@@ -1,0 +1,77 @@
+{% extends 'base/header_user.html' %}
+{% load socialaccount %}
+{% load static %}
+{% block content %}
+
+
+<div class="container custom-container" style="text-align: center; padding-top: 10%; border: none;">
+    <a href="{% url 'landingpage' %}" class="position-absolute top-0 end-0 m-3">
+        <i class="fa fa-times fa-2x" aria-hidden="true"></i>
+      </a>
+    {% if user.is_authenticated %}
+        <h3>Welcome {{ user.username }} !!!</h3>
+        <br /><br />
+        <a href="{% url 'userlogout' %}" class="btn btn-danger btn-sm">Logout</a>
+    {% else %}
+    <div class="card p-4" id="loginemail">
+        <h2>Log In</h2>
+            <br />
+            <h4>New to the site? 
+                <a type="button" id="signup_with_email" href="{% url 'userregisteremail' %}" class="myButton">Sign Up</a>
+            </h4>
+        <br />
+        <div class="row mb-3">
+            <div class="col-md-6 offset-md-3">
+                <div class="text-end">
+                    <a href="{% url 'forgetpassword' %}">Reset Password</a>
+                </div>
+            </div>
+        </div>
+        <form method="POST" name="loginForm">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="login">
+            <div class="row mb-3">
+                <div class="col-md-6 offset-md-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6 offset-md-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6 offset-md-3">
+                    <div class="g-recaptcha" data-sitekey="{{ site_key }}" data-callback="onCaptchaSuccess" data-expired-callback="onCaptchaExpired"></div>
+                    {% if captcha_error %}
+                        <p class="text-danger">{{ captcha_error }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <button type="submit" id="submitButton" class="btn btn-primary col-6" disabled>
+                        <i class="fa fa-envelope"></i> Login With Email
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="row mt-3">
+            <div class="col-md-6 offset-md-3">
+                <hr>
+            </div>
+            <div class="col-12 text-center mt-2">
+                <span class="text-muted">or</span>
+            </div>
+            <div class="col-md-6 offset-md-3 mt-2">
+                <a href="{% provider_login_url 'google' %}">
+                    <img src="{% static 'icons/google.png' %}" alt="Google Icon" class="img-fluid" style="max-width: 40px;">
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}

@@ -1,0 +1,24 @@
+.myButton {
+  background-color: #ffffff; /* Keep background color the same */
+  color: blue; /* Change text color to blue */
+  padding: 1px 2px;
+  border: none;
+  cursor: pointer;
+}
+
+.g-recaptcha {
+  margin: 0 auto; /* This centers the widget horizontally */
+  display: block; /* Ensures the widget is displayed as a block element */
+  width: fit-content; /* Adjust the width of the widget to fit its content */
+}
+
+.custom-container {
+  text-align: center;
+  padding-top: 100%;
+  border: none;
+}
+
+div {
+  border: none;
+  background-color: transparent;
+}

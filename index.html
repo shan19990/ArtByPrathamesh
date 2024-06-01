@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login and Register Forms</title>
+<style>
+  .form-container {
+    display: none;
+    text-align: center;
+    padding-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<h2>Welcome to the Website</h2>
+<p>Please select an action:</p>
+<button onclick="showLoginForm()">Login</button>
+<button onclick="showRegisterForm()">Register</button>
+
+<div id="loginForm" class="form-container">
+  <h2>Login</h2>
+  <form>
+    <input type="email" placeholder="Email" required><br><br>
+    <input type="password" placeholder="Password" required><br><br>
+    <button type="submit">Login</button>
+  </form>
+</div>
+
+<div id="registerForm" class="form-container">
+  <h2>Register</h2>
+  <form>
+    <input type="text" placeholder="Username" required><br><br>
+    <input type="email" placeholder="Email" required><br><br>
+    <input type="password" placeholder="Password" required><br><br>
+    <button type="submit">Register</button>
+  </form>
+</div>
+
+<script>
+  function showLoginForm() {
+    var loginForm = document.getElementById("loginForm");
+    var registerForm = document.getElementById("registerForm");
+    loginForm.style.display = "block";
+    registerForm.style.display = "none";
+  }
+
+  function showRegisterForm() {
+    var loginForm = document.getElementById("loginForm");
+    var registerForm = document.getElementById("registerForm");
+    loginForm.style.display = "none";
+    registerForm.style.display = "block";
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+{% extends 'base/header_market.html' %}
+{% load static %}
+{% block content %}
+<style>
+
+</style>
+<div style="background-color: whitesmoke;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="">
+                <div class="p-4" style="background-color: whitesmoke;">
+                    <h2 class="luckiest-guy-regular text-center">Welcome to Our Website</h2>
+                    <h3 class="courgette-regular text-center mt-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed dapibus erat id libero molestie, nec tristique eros dignissim. Cras tempor vehicula massa, non tincidunt justo commodo vel. Nulla id dictum mi. Vestibulum nec metus id justo eleifend dictum. Duis bibendum massa ac orci tempus venenatis. Vestibulum posuere elit nec turpis eleifend, vitae efficitur purus ullamcorper. Nam id metus consectetur, faucibus justo in, accumsan libero. Donec pretium blandit nunc ut facilisis. Mauris nec purus in elit volutpat fermentum nec eu massa.</h3>
+                    <div class="text-center mt-3">
+                        <a href="{% url 'gallery' %}" class="btn btn-transparent jaro mr-2">VIEW GALLERY</a>
+                        <a href="{% url 'contact' %}" class="btn btn-transparent jaro">GET IN TOUCH</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="landing-page-container">
+    <div class="landing-page-content">
+        <h1 class="luckiest-guy-regular text-center fade-text">Welcome to My Website</h1>
+    </div>   
+</div>
+<div class="logos" style="background-color: black;">
+    <div class="logos-slide">
+      {% for image in images %}
+        <img src="{{ image.image.url }}" alt="{{ image.title }}" loading="lazy">
+      {% endfor %}
+    </div>
+    <div class="logos-slide">
+      {% for image in images %}
+        <img src="{{ image.image.url }}" alt="{{ image.title }}" loading="lazy">
+      {% endfor %}
+    </div>
+  </div>  
+<div style="padding: 30px 30px;backdrop-filter: blur(10px); margin-bottom: -25px; background-color: whitesmoke;">
+    <h1 class="text-center great-vibes-regular">Comments from our loyal customers</h1>
+    <hr>
+    <div class="tab-content">
+        <div id="reviews" class="tab-pane fade show active">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <div class="rating">
+                                <span class="fa fa-star checked" aria-hidden="true"></span>
+                                <span class="fa fa-star checked" aria-hidden="true"></span>
+                                <span class="fa fa-star checked" aria-hidden="true"></span>
+                                <span class="fa fa-star checked" aria-hidden="true"></span>
+                                <span class="fa fa-star checked" aria-hidden="true"></span>
+                            </div>
+                            <h4 class="merienda">Lorem ipsum dolor sit amet consectetur adipisicing elit. Et, ex voluptatibus. Natus doloribus sunt voluptatibus.</h4>
+                            <h3>John Doe</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <div class="rating">
+                                <span class="fa fa-star checked" aria-hidden="true"></span>
+                                <span class="fa fa-star checked" aria-hidden="true"></span>
+                                <span class="fa fa-star checked" aria-hidden="true"></span>
+                                <span class="fa fa-star checked" aria-hidden="true"></span>
+                                <span class="fa fa-star checked" aria-hidden="true"></span>
+                            </div>
+                            <h4 class="merienda">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem dolorem, non iusto ducimus nam voluptatibus.</h4>
+                            <h3>Jane Smith</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <div class="rating">
+                                <span class="fa fa-star checked" aria-hidden="true"></span>
+                                <span class="fa fa-star checked" aria-hidden="true"></span>
+                                <span class="fa fa-star checked" aria-hidden="true"></span>
+                                <span class="fa fa-star checked" aria-hidden="true"></span>
+                                <span class="fa fa-star checked" aria-hidden="true"></span>
+                            </div>
+                            <h4 class="merienda">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores enim eius, ratione architecto modi mollitia.</h4>
+                            <h3>Michael Johnson</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+</div>
+{% endblock content %}

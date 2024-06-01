@@ -1,0 +1,42 @@
+{% extends 'base/header_market.html' %}
+{% load static %}
+{% block content %}
+
+<div class="painting-sale-container">
+    <div id="paintings-grid" class="painting-grid">
+        {% for painting in paintings %}
+        <div class="painting-card" 
+            data-image-url="{{ painting.image.url }}" 
+            data-title="{{ painting.title }}" 
+            data-description="{{ painting.description }}" 
+            data-cost="{{ painting.cost }}" >
+            <img src="{{ painting.image.url }}" alt="{{ painting.title }}">
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Add a message prompting users to scroll for more items -->
+<div class="scroll-message text-center" id="scroll-message">
+    <p>Scroll down for more items</p>
+</div>
+
+<div class="modal fade" id="pictureModal" tabindex="-1" role="dialog" aria-labelledby="pictureModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header position-relative">
+                <h2 id="modalTitle"></h2>
+                <button type="button" class="close position-absolute top-0 end-0 m-3" data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times fa-2x" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" class="card-img-top" src="" alt="">
+                <p id="modalDescription"></p>
+                <p id="modalCost"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="current-page" value="1">
+{% endblock content %}

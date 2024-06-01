@@ -1,0 +1,706 @@
+/* Fonts */
+.briem-hand {
+  font-family: "Briem Hand", cursive;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.gluten {
+  font-family: "Gluten", cursive;
+  font-optical-sizing: auto;
+  font-weight: 260;
+  font-style: normal;
+  font-variation-settings: "slnt" 7;
+}
+
+.poetsen-one-regular {
+  font-family: "Poetsen One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.caveat {
+  font-family: "Caveat", cursive;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.courgette-regular {
+  font-family: "Courgette", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.luckiest-guy-regular {
+  font-family: "Luckiest Guy", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.merienda {
+  font-family: "Merienda", cursive;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.great-vibes-regular {
+  font-family: "Great Vibes", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.social-link{
+  margin: 5px;
+}
+
+.social-icon{
+  height: 40px;
+  width: 40px;
+}
+
+/* Elements */
+.icon-title,
+.icon-title:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.header {
+  background: rgb(0, 178, 255);
+  color: #fff;
+}
+
+#lblCartCount {
+  font-size: 12px;
+  background: #ff0000;
+  color: #fff;
+  padding: 0 5px;
+  vertical-align: top;
+  margin-left: -10px;
+}
+
+.badge,
+.label-warning[href],
+.badge-warning[href] {
+  padding: 0 9px;
+  border-radius: 9px;
+}
+
+.label-warning[href],
+.badge-warning[href] {
+  background-color: #c67605;
+}
+
+.jaro,
+.jaro2 {
+  position: relative;
+  font-family: "Jaro", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  background-color: transparent;
+  border-radius: 0;
+  border: solid transparent;
+}
+
+.jaro {
+  transition: background-color 0.3s ease, border-color 0.3s ease, padding-right 0.5s ease;
+  padding-right: 20px;
+}
+
+.jaro:hover {
+  background-color: wheat;
+  border-color: black;
+  padding-right: 40px;
+}
+
+.jaro2 {
+  transition: background-color 0.6s ease, border-color 0.6s ease;
+  padding-right: 20px;
+}
+
+.jaro2:hover {
+  background-color: lightblue;
+  border-color: black;
+}
+
+.jaro::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  border: solid transparent;
+  border-width: 10px;
+  border-left-color: black;
+  transition: border-left-color 0.3s ease;
+  transform: translateY(-50%);
+  opacity: 0;
+}
+
+.jaro:hover::before {
+  opacity: 1;
+}
+
+.drop-down-button-7,
+.drop-down-button-7 .drop-down-button:hover {
+  backdrop-filter: blur(7px);
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.drop-down-button-7 .drop-down-button:hover {
+  background-color: rgba(255, 255, 255, 0.01);
+}
+
+/* Other */
+.div-transparent {
+  border: none;
+  backdrop-filter: blur(7px);
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+footer {
+  background-color: #40a2c9;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+
+.checked {
+  color: gold;
+}
+
+.unchecked {
+  color: gray;
+}
+
+.wrapper {
+  flex: 1;
+}
+
+/* Logos */
+.logos {
+  overflow: hidden;
+  padding: 6px 0;
+  white-space: nowrap;
+  position: relative;
+}
+
+.logos:before,
+.logos:after {
+  position: absolute;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  content: "";
+  z-index: 2;
+}
+
+.logos:before {
+  left: 0;
+}
+
+.logos:after {
+  right: 0;
+}
+
+.logos-slide {
+  display: inline-block;
+  animation: slide 120s infinite linear; 
+}
+
+.logos-slide img {
+  height: 100px;  /* Adjusted height to fit more logos */
+  margin: 0px; /* Space between images */
+  margin: 0px 2px;
+}
+
+/* Keyframes for sliding animation */
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+@media (max-width: 600px) {
+  .logos-slide {
+    display: inline-block;
+    animation: slide 70s infinite linear;
+  }
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Increase modal width */
+.modal-dialog {
+  max-width: 800px; /* Adjust as needed */
+  margin: auto; /* Center modal horizontally */
+}
+
+/* Increase modal body width */
+.modal-body {
+  width: 100%; /* Adjust as needed */
+}
+
+/* Optional: Center modal horizontally */
+.modal-dialog {
+  margin: auto;
+}
+
+.modal-content {
+  background-color: #ffffff; /* Set background color to white */
+  opacity: 1; /* Ensure full opacity */
+}
+
+
+/* Loading overlay styles */
+#loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Ensure it's above all other content */
+}
+
+#loading-gif {
+  width: 100px; /* Adjust the size of the loading GIF */
+  height: 100px; /* Adjust the size of the loading GIF */
+}
+
+/* Base Styles (for larger screens by default) */
+/* Include your current CSS here */
+
+/* Mobile Devices */
+@media (max-width: 600px) {
+  .header {
+    background: rgb(0, 150, 255); /* Lighter blue for mobile */
+    color: #fff;
+  }
+
+  #lblCartCount {
+    font-size: 10px;
+    padding: 0 3px;
+    margin-left: -8px;
+  }
+
+  .logos-slide img {
+    height: 150px; /* Smaller image size for mobile */
+  }
+
+  .scroll-card img {
+    width: 15rem;
+    height: 15rem;
+  }
+
+  .modal-dialog {
+    max-width: 100%; /* Full width on mobile */
+  }
+
+  .modal-content {
+    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+/* Tablets */
+@media (min-width: 601px) and (max-width: 768px) {
+  .header {
+    background: rgb(0, 160, 255);
+    color: #fff;
+  }
+
+  #lblCartCount {
+    font-size: 11px;
+    padding: 0 4px;
+    margin-left: -9px;
+  }
+
+  .logos-slide img {
+    height: 200px; /* Adjusted image size for tablets */
+  }
+
+  .scroll-card img {
+    width: 18rem;
+    height: 18rem;
+  }
+
+  .modal-dialog {
+    max-width: 80%; /* 80% width on tablets */
+  }
+
+  .modal-content {
+    backdrop-filter: blur(4px);
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+/* Laptops */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .header {
+    background: rgb(0, 170, 255);
+    color: #fff;
+  }
+
+  #lblCartCount {
+    font-size: 12px;
+    padding: 0 5px;
+    margin-left: -10px;
+  }
+
+  .logos-slide img {
+    height: 250px; /* Adjusted image size for laptops */
+  }
+
+  .scroll-card img {
+    width: 19rem;
+    height: 19rem;
+  }
+
+  .modal-dialog {
+    max-width: 70%; /* 70% width on laptops */
+  }
+
+  .modal-content {
+    backdrop-filter: blur(5px);
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* Desktops */
+@media (min-width: 1025px) {
+  .header {
+    background: rgb(0, 178, 255); /* Default */
+    color: #fff;
+  }
+
+  #lblCartCount {
+    font-size: 12px;
+    padding: 0 5px;
+    margin-left: -10px;
+  }
+
+  .logos-slide img {
+    height: 300px; /* Default size for desktops */
+  }
+
+  .scroll-card img {
+    width: 20rem; /* Default size for desktops */
+    height: 20rem;
+  }
+
+  .modal-dialog {
+    max-width: 800px; /* Default size for desktops */
+  }
+
+  .modal-content {
+    backdrop-filter: blur(5px); /* Default */
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Sticky Navbar */
+.sticky-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white; /* Adjust background color as needed */
+    z-index: 1000; /* Ensure it appears above other content */
+}
+
+.sticky-navbar .container {
+    padding-top: 10px; /* Adjust top padding as needed */
+    padding-bottom: 10px; /* Adjust bottom padding as needed */
+}
+
+
+.painting-sale-container {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1000; /* Ensure the navbar appears above other content */
+}
+
+.painting-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.painting-card {
+  border: 2px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  background-color: #fff;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.painting-card:hover {
+  transform: scale(1.05);
+  border-color: #000;
+}
+
+.painting-card img {
+  max-width: 100%;
+  height: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (max-width: 768px) {
+  .painting-grid {
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 8px;
+  }
+  .painting-card {
+      padding: 3px;
+  }
+  .img-fluid{
+    height: 30px;
+    width: 30px;
+  }
+}
+
+/* Small devices (phones, 480px and down) */
+@media (max-width: 480px) {
+  .painting-grid {
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 5px;
+  }
+  .painting-card {
+      padding: 2px;
+  }
+  .img-fluid{
+    height: 30px;
+    width: 30px;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .painting-grid {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+  .painting-card {
+      padding: 5px;
+  }
+  .img-fluid{
+    height: 30px;
+    width: 30px;
+  }
+}
+
+.landing-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full height of the viewport */
+  background-color: lightgray; /* Optional: Background color for the whole page */
+}
+
+.landing-page-image {
+  height: 80vh; /* 80% of the viewport height */
+  width: 80vw; /* 80% of the viewport width */
+  background-position: center; /* Centers the background image */
+}
+
+
+.painting-sale-container {
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+}
+
+.sidebar-class {
+  width: 300px;
+  margin-right: 20px;
+  height: auto;
+  overflow: hidden; /* Hide overflow content */
+  transition: height 0.3s ease; /* Add transition for smooth animation */
+}
+
+.painting-grid {
+  flex: 1;
+}
+
+.filter-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.filters {
+  display: none; /* Initially hidden */
+  padding: 20px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+.filter-button, .filter-div{
+  display:none;
+}
+
+@media (max-width: 768px) {
+  .painting-sale-container {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .sidebar-class {
+      width: 100%;
+      margin-right: 0;
+      text-align: center;
+      overflow: hidden;
+      height: 0; /* Initially collapsed */
+  }
+
+  .filter-button {
+      margin-left: auto; /* Move button to the right */
+      margin-right: 20px; /* Add some space between button and content */
+  }
+
+  .filters {
+      width: calc(100% - 40px); /* Adjust width to fit the container */
+  }
+
+  .filter-button{
+    display: block;
+  }
+
+  .filter-div{
+    display: none;
+  }
+}
+
+.painting-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+.painting-card {
+  width: 30%;
+  margin-bottom: 10px;
+}
+.painting-card img {
+  max-width: 100%;
+  display: block;
+}
+.modal-header .close {
+  background: none;
+  border: none;
+}
+
+.landing-page-container {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Extend height to enable scrolling */
+  background-image: url("/static/background/background.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+.landing-page-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Black overlay with 50% opacity */
+  z-index: 1; /* Ensure the overlay is above the background image */
+}
+
+.landing-page-content {
+  position: relative;
+  z-index: 2; /* Ensure the content is above the overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: white; /* Optional: To make text more visible on dark background */
+}
+
+.fade-text {
+  font-size: 3rem;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out, font-size 0.5s ease-in-out;
+}
+
+.fade-text.visible {
+  opacity: 1;
+  font-size: 4rem; /* Enlarged font size */
+}
+
+@media (max-width: 768px) {
+  .fade-text {
+    font-size: 1rem;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, font-size 0.5s ease-in-out;
+  }
+  
+  .fade-text.visible {
+    opacity: 1;
+    font-size: 4rem; /* Enlarged font size */
+  }
+}

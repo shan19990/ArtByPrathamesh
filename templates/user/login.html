@@ -1,0 +1,48 @@
+{% extends 'base/header_user.html' %}
+{% load socialaccount %}
+{% load static %}
+{% block content %}
+
+<div class="container custom-container" style="text-align: center; padding-top: 10%; border: none;">
+    <a href="{% url 'landingpage' %}" class="position-absolute top-0 end-0 m-3">
+    <i class="fa fa-times fa-2x" aria-hidden="true"></i>
+  </a>
+  {% if user.is_authenticated %}
+    <h3>Welcome {{ user.username }} !!!</h3>
+    <br /><br />
+    <a href="{% url 'userlogout' %}" class="btn btn-danger btn-sm">Logout</a>
+  {% else %}
+  <div class="card p-4" id="loginSection">
+    <h2>Log In</h2>
+    <br />
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <a href="{% provider_login_url 'google' %}" class="btn btn-primary col-6">
+          <i class="fa brands fa-google"></i> Login with Google
+        </a>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-5">
+        <hr>
+      </div>
+      <div class="col-2">
+        <span class="text-muted">or</span>
+      </div>
+      <div class="col-5">
+        <hr>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <a id="login_with_email" href="{% url 'userloginemail' %}" class="btn btn-primary col-6">
+          <i class="fa fa-envelope"></i> Login With Email
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock content %}
