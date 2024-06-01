@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-wecd-et*0#dvsbb5k=5=745opu)(glsyc%1o9zwl4ggu#0sg$(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 SITE_ID = 2
 
@@ -153,6 +153,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR,"staticfiles")
 
 # Additional locations of static files
 STATICFILES_DIRS = [
