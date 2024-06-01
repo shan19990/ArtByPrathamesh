@@ -5,3 +5,4 @@ function onCaptchaSuccess() {
 function onCaptchaExpired() {
     document.getElementById('submitButton').setAttribute('disabled', 'disabled');
 };
+

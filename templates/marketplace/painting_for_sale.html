@@ -1,17 +1,17 @@
 {% extends 'base/header_market.html' %}
 {% load static %}
 {% block content %}
+<input type="hidden" id="username" value="{{ username }}">
 
 <div class="painting-sale-container">
     <!-- Sidebar -->
-
     <div id="sidebar" class="sidebar-class">
         <hr>
-        <h2 class="gluten">Filters</h2>
+        <h2 class="gluten-without-background">Filters</h2>
         <!-- Dropdown for painting style -->
         <div class="filter-option">
-            <label class="gluten" for="style-filter">Style:</label>
-            <select class="gluten" style="height: 22px; text-align: center;" id="painting-filter">
+            <label class="gluten-without-background" for="style-filter">Style:</label>
+            <select class="gluten-without-background" style="height: 22px; text-align: center;" id="painting-filter">
                 <option class="gluten" value="all">All Styles</option>
                 <option class="gluten" value="acrylic">Acrylic Painting</option>
                 <option class="gluten" value="oil">Oil Painting</option>
@@ -23,30 +23,33 @@
             </select>
         </div>
         <hr>
-        <h2 class="gluten">Sort By:</h2>
+        <h2 class="gluten-without-background">Sort By:</h2>
         <!-- Radio buttons for sorting -->
-        <div class="sort-option gluten">
-            <label class="gluten"><input type="radio" name="sort" value="price-high-low"> Price: High to Low</label><br>
-            <label class="gluten"><input type="radio" name="sort" value="price-low-high"> Price: Low to High</label><br>
-            <label class="gluten"><input type="radio" name="sort" value="size-low-high"> Size: Low to High</label><br>
-            <label class="gluten"><input type="radio" name="sort" value="size-high-low"> Size: High to Low</label><br>
-        </div>        
+        <div class="sort-option gluten-without-background">
+            <label class="gluten-without-background"><input type="radio" name="sort" value="price-high-low"> Price: High to Low</label><br>
+            <label class="gluten-without-background"><input type="radio" name="sort" value="price-low-high"> Price: Low to High</label><br>
+            <label class="gluten-without-background"><input type="radio" name="sort" value="size-low-high"> Size: Low to High</label><br>
+            <label class="gluten-without-background"><input type="radio" name="sort" value="size-high-low"> Size: High to Low</label><br>
+        </div>
         <hr>
         <!-- Buttons to submit and clear filters -->
         <button id="submit-filters" class="btn btn-transparent" style="border:solid;border-width: thin">Submit Filters</button>
         <button id="clear-filters" class="btn btn-transparent" style="border:solid;border-width: thin">Clear Filters</button>
     </div>
-    
+
     <!-- Main Content: Painting Grid -->
-    <div id="paintings-grid" class="painting-grid">
-    </div>
+    <div id="paintings-grid" class="painting-grid"></div>
 </div>
 
 <!-- Add a message prompting users to scroll for more items -->
 <div class="scroll-message text-center" id="scroll-message">
     <p>Scroll down for more items</p>
 </div>
+
+<!-- Cart Counter -->
 <div id="cart-counter">0</div>
+
+<!-- Modal for showing painting details -->
 <div class="modal fade" id="pictureModal" tabindex="-1" role="dialog" aria-labelledby="pictureModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -64,6 +67,8 @@
         </div>
     </div>
 </div>
+
 <input type="hidden" id="current-page" value="1">
+
 <script src="{% static 'js/painting_for_sale.js' %}"></script>
 {% endblock content %}

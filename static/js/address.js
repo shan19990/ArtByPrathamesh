@@ -30,3 +30,13 @@ function clearAddress() {
     document.getElementById('phone_number').value = '';
     document.getElementById('form-id').value = '';
 }
+document.addEventListener('DOMContentLoaded', function() {
+    updateCartCounter();
+});
+
+function updateCartCounter() {
+    var username = document.getElementById('username').value;
+    var cart = JSON.parse(localStorage.getItem('cart_' + username)) || [];
+    var cartItemsCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+    document.getElementById('lblCartCount').textContent = cartItemsCount;
+}

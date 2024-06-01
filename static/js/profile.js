@@ -36,3 +36,14 @@ function closeProfileForm() {
     submitbutton.classList.add('d-none');
     closebutton.style.display = 'none';
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    updateCartCounter();
+});
+
+function updateCartCounter() {
+    var username = document.getElementById('username').value;
+    var cart = JSON.parse(localStorage.getItem('cart_' + username)) || [];
+    var cartItemsCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+    document.getElementById('lblCartCount').textContent = cartItemsCount;
+}

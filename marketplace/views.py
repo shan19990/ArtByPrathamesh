@@ -8,10 +8,10 @@ from django.http import JsonResponse
 # Create your views here.
 def LandingPageView(request):
     images = GalleryImagesModel.objects.order_by('?')
-    return render(request, "marketplace/landingpage.html",{"images":images})
+    return render(request, "marketplace/landingpage.html",{"images":images,'username': request.user.username})
 
 def CartView(request):
-    return render(request,"marketplace/cart.html")
+    return render(request,"marketplace/cart.html",{'username': request.user.username})
 
 def SelectAddressView(request):
     user = request.user
@@ -30,7 +30,7 @@ def ProfileView(request):
         user.save()
         return redirect('profile')
 
-    return render(request,"marketplace/profile.html")
+    return render(request,"marketplace/profile.html",{'username': request.user.username})
 
 def AddressView(request):
     user = request.user
@@ -58,22 +58,22 @@ def AddressView(request):
             address.contact = phone_number
             address.save()
             print(address.contact)
-    return render(request,"marketplace/address.html",{"addresses":addresses})
+    return render(request,"marketplace/address.html",{"addresses":addresses,'username': request.user.username})
 
 def AddressDeleteView(request, id):
     AddressModel.objects.get(pk=id).delete()
     return redirect("address")
 
 def ContactUsView(request):
-    return render(request,"marketplace/contactus.html")
+    return render(request,"marketplace/contactus.html",{'username': request.user.username})
 
 def GalleryView(request):
     query = PaintingForSaleModel.objects.order_by('?')
     images = list(chain.from_iterable([query] * 3))
-    return render(request,"marketplace/gallery.html")
+    return render(request,"marketplace/gallery.html",{'username': request.user.username})
 
 def PaintingForSaleView(request):
-    return render(request,"marketplace/painting_for_sale.html")
+    return render(request,"marketplace/painting_for_sale.html",{'username': request.user.username})
 
 def load_paintings(request):
     page = request.GET.get('page', 1)
@@ -126,23 +126,3 @@ def load_paintings_filters(request):
     data = [{'id': painting.id, 'title': painting.title, 'description': painting.description, 'cost': painting.cost, 'image_url': painting.image.url, 'type': painting.type, 'height': painting.height, 'width': painting.width} for painting in paintings_for_page]
 
     return JsonResponse({'paintings': data})
-
-
-
-def AcrillicView(request):
-    return render(request,"marketplace/acrillic_painting.html")
-
-def CharcoalView(request):
-    return render(request,"marketplace/charcoal_painting.html")
-
-def OilView(request):
-    return render(request,"marketplace/oil_painting.html")
-
-def PencilColourView(request):
-    return render(request,"marketplace/pencil_colour_painting.html")
-
-def PencilPotraitView(request):
-    return render(request,"marketplace/pencil_potrait_painting.html")
-
-def WaterColourView(request):
-    return render(request,"marketplace/watercolout_painting.html")

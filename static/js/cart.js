@@ -1,18 +1,20 @@
 function incrementItemCart(imageUrl) {
-    var cart = JSON.parse(localStorage.getItem('cart')) || [];
+    var username = document.getElementById('username').value;
+    var cart = JSON.parse(localStorage.getItem('cart_' + username)) || [];
     var itemIndex = cart.findIndex(item => item.imageUrl === imageUrl);
     
     if (itemIndex !== -1) {
         cart[itemIndex].quantity += 1;
     }
     
-    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem('cart_' + username, JSON.stringify(cart));
     updateCartCounter();
     renderCartItems();
 }
 
 function decrementItemCart(imageUrl) {
-    var cart = JSON.parse(localStorage.getItem('cart')) || [];
+    var username = document.getElementById('username').value;
+    var cart = JSON.parse(localStorage.getItem('cart_' + username)) || [];
     var itemIndex = cart.findIndex(item => item.imageUrl === imageUrl);
     
     if (itemIndex !== -1) {
@@ -23,25 +25,27 @@ function decrementItemCart(imageUrl) {
         }
     }
     
-    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem('cart_' + username, JSON.stringify(cart));
     updateCartCounter();
     renderCartItems();
     renderCartActions()
 }
 
 function clearItemCart(imageUrl) {
-    var cart = JSON.parse(localStorage.getItem('cart')) || [];
+    var username = document.getElementById('username').value;
+    var cart = JSON.parse(localStorage.getItem('cart_' + username)) || [];
     cart = cart.filter(item => item.imageUrl !== imageUrl);
     
-    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem('cart_' + username, JSON.stringify(cart));
     updateCartCounter();
     renderCartItems();
 }
 
 function deleteItemCart(imageUrl) {
-    var cart = JSON.parse(localStorage.getItem('cart')) || [];
+    var username = document.getElementById('username').value;
+    var cart = JSON.parse(localStorage.getItem('cart_' + username)) || [];
     var updatedCart = cart.filter(item => item.imageUrl !== imageUrl);
-    localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update the local storage
+    localStorage.setItem('cart_' + username, JSON.stringify(updatedCart)); // Update the local storage
     updateCartCounter();
     renderCartItems();
     renderCartActions()
@@ -53,7 +57,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function renderCartItems() {
-    var cart = JSON.parse(localStorage.getItem('cart')) || [];
+    var username = document.getElementById('username').value;
+    var cart = JSON.parse(localStorage.getItem('cart_' + username)) || [];
     var cartItemsContainer = document.getElementById('cart-items');
     cartItemsContainer.innerHTML = ''; // Clear previous items
 
@@ -89,7 +94,8 @@ function renderCartItems() {
 
 
 function renderCartActions() {
-    var cart = JSON.parse(localStorage.getItem('cart')) || [];
+    var username = document.getElementById('username').value;
+    var cart = JSON.parse(localStorage.getItem('cart_' + username)) || [];
     var cartActionsContainer = document.getElementById('cart-actions');
 
     if (cart.length > 0) {
@@ -99,4 +105,16 @@ function renderCartActions() {
         // Render Empty Cart message
         cartActionsContainer.innerHTML = '<p>Empty Cart. <a href="/painting_for_sale/">Return to Shop</a></p>';
     }
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    updateCartCounter();
+});
+
+function updateCartCounter() {
+    var username = document.getElementById('username').value;
+    var cart = JSON.parse(localStorage.getItem('cart_' + username)) || [];
+    var cartItemsCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+    document.getElementById('lblCartCount').textContent = cartItemsCount;
 }

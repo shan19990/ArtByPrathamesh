@@ -3,8 +3,6 @@ $(document).ready(function() {
     var loading = false; // Flag to prevent multiple AJAX requests
     var threshold = 100; // Threshold for triggering the AJAX call (in pixels)
     var timeout; // Variable to store timeout ID
-    var currentStyleFilter = null;
-    var currentSortOption = null;
     var currentPath = window.location.pathname;
     var isPaintingForSalePage = currentPath.startsWith('/painting_for_sale/');
     var isMerchForSalePage = currentPath.startsWith('/merch/');
@@ -16,8 +14,6 @@ $(document).ready(function() {
             if (resetPage) {
                 page = 1;
                 $('#paintings-grid').empty();
-                currentStyleFilter = styleFilter;
-                currentSortOption = sortOption;
             }
         
             if (!loading) {
@@ -28,17 +24,14 @@ $(document).ready(function() {
                     type: "GET",
                     data: {
                         'page': page,
-                        'style': currentStyleFilter,
-                        'sort_option': currentSortOption,
                     },
                     dataType: "json",
                     success: function(response) {
                         var paintings = response.paintings;
                         var html = '';
-                        var addToCart = !isGalleryPage;
         
                         paintings.forEach(function(painting) {
-                            html += '<div class="painting-card" data-image-url="' + painting.image_url + '" data-title="' + painting.title + '" data-description="' + painting.description + '" data-cost="' + painting.cost + '" onclick="showDetails(\'' + painting.image_url + '\', \'' + painting.title + '\', \'' + painting.description + '\', \'' + painting.cost + '\', ' + addToCart + ')">';
+                            html += '<div class="painting-card" data-image-url="' + painting.image_url + '" data-title="' + painting.title + '" data-description="' + painting.description + '" data-cost="' + painting.cost + '" onclick="showDetails(\'' + painting.image_url + '\', \'' + painting.title + '\', \'' + painting.description + '\', \'' + painting.cost + '\')">';
                             html += '<img src="' + painting.image_url + '" alt="' + painting.title + '">';
                             html += '</div>';
                         });
@@ -61,8 +54,6 @@ $(document).ready(function() {
             }
         }        
 
-        
-
         // Function to debounce scroll event
         function debounceScroll() {
             if (timeout) {
@@ -70,7 +61,7 @@ $(document).ready(function() {
             }
             timeout = setTimeout(function() {
                 if ($(window).scrollTop() + $(window).height() >= $(document).height() - threshold) {
-                    loadPaintings(currentStyleFilter, currentSortOption);
+                    loadPaintings();
                 }
             }, 100); // Adjust debounce delay as needed
         }
@@ -80,219 +71,21 @@ $(document).ready(function() {
 
         // Bind debounce function to scroll event
         $(window).on('scroll', debounceScroll);
-
-        // Event listener for the Apply Filters button
-        document.getElementById("submit-filters").addEventListener("click", function() {
-            console.log("Filtering...");
-            var styleFilter = document.getElementById("painting-filter").value || null;
-            var sortOption = document.querySelector('input[name="sort"]:checked') ? document.querySelector('input[name="sort"]:checked').value : null;
-            loadPaintings(styleFilter, sortOption, true);
-        });
-
-        function clearFilters() {
-            // Reset the dropdown and radio buttons to their default values
-            document.getElementById("painting-filter").selectedIndex = 0;
-            var sortOptions = document.getElementsByName("sort");
-            for (var i = 0; i < sortOptions.length; i++) {
-                sortOptions[i].checked = false;
-            }
-            loadPaintings(null, null, true);
-        }
-
-        // Event listener for the Clear Filters button
-        document.getElementById("clear-filters").addEventListener("click", function() {
-            clearFilters();
-        });
     }
 });
 
 
-function showDetails(imageUrl, title, description, cost, addToCart) {
+function showDetails(imageUrl, title, description, cost) {
     // Set modal content with picture details
     document.getElementById('modalImage').src = imageUrl;
     document.getElementById('modalTitle').textContent = title;
     document.getElementById('modalDescription').textContent = description;
     document.getElementById('modalCost').textContent = "Cost: " + cost;
 
-    // Get current quantity from cart
-    var cart = JSON.parse(localStorage.getItem('cart')) || [];
-    var item = cart.find(item => item.imageUrl === imageUrl);
-    var quantity = item ? item.quantity : 0;
-
-    // Display current quantity
-    var modalBody = document.querySelector('.modal-body');
-    var quantityElement = document.getElementById('itemQuantity');
-    if (!quantityElement) {
-        quantityElement = document.createElement('p');
-        quantityElement.id = 'itemQuantity';
-        modalBody.appendChild(quantityElement);
-    }
-    quantityElement.textContent = "Quantity in cart: " + quantity;
-
-    // Remove any existing buttons
-    var existingAddToCartButton = document.getElementById('addToCartButton');
-    var existingIncrementButton = document.getElementById('incrementButton');
-    var existingDecrementButton = document.getElementById('decrementButton');
-    var existingClearButton = document.getElementById('clearButton');
-
-    if (existingAddToCartButton) {
-        modalBody.removeChild(existingAddToCartButton);
-    }
-    if (existingIncrementButton) {
-        modalBody.removeChild(existingIncrementButton);
-    }
-    if (existingDecrementButton) {
-        modalBody.removeChild(existingDecrementButton);
-    }
-    if (existingClearButton) {
-        modalBody.removeChild(existingClearButton);
-    }
-
-    // Show "Add to Cart" button if addToCart is true and item is not in cart
-    if (addToCart && quantity === 0) {
-        var addToCartButton = document.createElement('button');
-        addToCartButton.textContent = 'Add to Cart';
-        addToCartButton.id = 'addToCartButton';
-        addToCartButton.className = 'btn btn-primary';
-        modalBody.appendChild(addToCartButton);
-
-        addToCartButton.onclick = function() {
-            addToCartFunction(imageUrl, title, description, cost);
-            showDetails(imageUrl, title, description, cost, addToCart); // Update modal with new quantity
-        };
-    } else if (quantity > 0) {
-        // Show increment, decrement, and clear buttons if item is in cart
-        var incrementButton = document.createElement('button');
-        incrementButton.textContent = '+';
-        incrementButton.id = 'incrementButton';
-        incrementButton.className = 'btn btn-secondary';
-        modalBody.appendChild(incrementButton);
-
-        var decrementButton = document.createElement('button');
-        decrementButton.textContent = '-';
-        decrementButton.id = 'decrementButton';
-        decrementButton.className = 'btn btn-secondary';
-        modalBody.appendChild(decrementButton);
-
-        var clearButton = document.createElement('button');
-        clearButton.textContent = 'Clear';
-        clearButton.id = 'clearButton';
-        clearButton.className = 'btn btn-danger';
-        modalBody.appendChild(clearButton);
-
-        incrementButton.onclick = function() {
-            incrementItem(imageUrl);
-            showDetails(imageUrl, title, description, cost, addToCart); // Update modal with new quantity
-        };
-
-        decrementButton.onclick = function() {
-            decrementItem(imageUrl);
-            showDetails(imageUrl, title, description, cost, addToCart); // Update modal with new quantity
-        };
-
-        clearButton.onclick = function() {
-            clearItem(imageUrl);
-            showDetails(imageUrl, title, description, cost, addToCart); // Update modal with new quantity
-        };
-    }
-
     // Open Bootstrap modal
     jQuery('#pictureModal').modal('show');
 }
 
-function addToCartFunction(imageUrl, title, description, cost) {
-    var cart = JSON.parse(localStorage.getItem('cart')) || [];
-    var itemIndex = cart.findIndex(item => item.imageUrl === imageUrl);
-    
-    if (itemIndex !== -1) {
-        // Item already in cart, increment quantity
-        cart[itemIndex].quantity += 1;
-    } else {
-        // New item, add to cart with quantity 1
-        cart.push({ imageUrl: imageUrl, title: title, description: description, cost: cost, quantity: 1 });
-    }
-    
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCounter();
-}
-
-function incrementItem(imageUrl) {
-    var cart = JSON.parse(localStorage.getItem('cart')) || [];
-    var itemIndex = cart.findIndex(item => item.imageUrl === imageUrl);
-    
-    if (itemIndex !== -1) {
-        cart[itemIndex].quantity += 1;
-    }
-    
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCounter();
-}
-
-function decrementItem(imageUrl) {
-    var cart = JSON.parse(localStorage.getItem('cart')) || [];
-    var itemIndex = cart.findIndex(item => item.imageUrl === imageUrl);
-    
-    if (itemIndex !== -1) {
-        if (cart[itemIndex].quantity > 1) {
-            cart[itemIndex].quantity -= 1;
-        } else {
-            cart.splice(itemIndex, 1);
-        }
-    }
-    
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCounter();
-}
-
-function clearItem(imageUrl) {
-    var cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart = cart.filter(item => item.imageUrl !== imageUrl);
-    
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCounter();
-}
-
-function updateCartCounter() {
-    var cart = JSON.parse(localStorage.getItem('cart')) || [];
-    document.getElementById('cart-counter').textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
-}
-
-// Initialize cart counter on page load
-document.addEventListener('DOMContentLoaded', function() {
-    updateCartCounter();
-});
-
-
-
-
-function showFilter(){
-    var filters = document.querySelector('.filter-div');
-    if (filters.style.display === 'none' || filters.style.display === '') {
-        filters.style.display = 'block';
-    } else {
-        filters.style.display = 'none';
-    }
-}
-
-// script.js
-
-document.addEventListener('DOMContentLoaded', () => {
-    const fadeText = document.querySelector('.fade-text');
-
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                fadeText.classList.add('visible');
-            } else {
-                fadeText.classList.remove('visible');
-            }
-        });
-    }, {
-        threshold: 0.1   // Adjust this threshold as needed
-    });
-
-    observer.observe(fadeText);
-});
 
 // Check if there are more items to load
 function checkMoreItems() {
@@ -312,3 +105,14 @@ function checkMoreItems() {
 window.onload = function() {
     checkMoreItems();
 };
+
+document.addEventListener('DOMContentLoaded', function() {
+    updateCartCounter();
+});
+
+function updateCartCounter() {
+    var username = document.getElementById('username').value;
+    var cart = JSON.parse(localStorage.getItem('cart_' + username)) || [];
+    var cartItemsCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+    document.getElementById('lblCartCount').textContent = cartItemsCount;
+}

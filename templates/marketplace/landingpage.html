@@ -1,9 +1,7 @@
 {% extends 'base/header_market.html' %}
 {% load static %}
 {% block content %}
-<style>
-
-</style>
+<input type="hidden" id="username" value="{{ username }}">
 <div style="background-color: whitesmoke;">
     <div class="container">
         <div class="row justify-content-center">
@@ -89,4 +87,5 @@
     </div>
     <hr>
 </div>
+<script src="{% static 'js/landingpage.js' %}"></script>
 {% endblock content %}
