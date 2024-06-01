@@ -4,6 +4,10 @@ from user.models import *
 from .models import *
 from itertools import chain
 from django.http import JsonResponse
+from django.core.mail import send_mail
+from yaphets.settings import EMAIL_HOST_USER,RECAPTCHA_PUBLIC_KEY
+from django.utils import timezone
+from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
 def LandingPageView(request):
@@ -65,7 +69,38 @@ def AddressDeleteView(request, id):
     return redirect("address")
 
 def ContactUsView(request):
-    return render(request,"marketplace/contactus.html",{'username': request.user.username})
+    site_key = RECAPTCHA_PUBLIC_KEY
+    
+    if request.method == "POST":
+        if request.session['form_submitted'] :
+            print("Form already submitted Please wait")
+            return redirect("landingpage")
+        
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        message = request.POST.get('message')
+
+        email_body = f"""
+            Name: {name}
+            Email: {email}
+            Phone: {phone}
+            Message: {message}
+        """
+
+        subject = 'Contact Form'
+        to_list = [ EMAIL_HOST_USER ]
+        #send_mail(subject, email_body, EMAIL_HOST_USER, to_list, fail_silently=True)
+        request.session['form_submitted'] = True
+        expiry_time = timezone.now() + timezone.timedelta(minutes=30)  # Expires in 30 minutes
+        request.session['form_submitted_expiry'] = expiry_time.strftime('%Y-%m-%dT%H:%M:%S')
+
+        # Optionally, you can set a custom JSON encoder to ensure compatibility
+        request.session.encoder = DjangoJSONEncoder
+
+        return redirect("landingpage")
+
+    return render(request,"marketplace/contactus.html",{'username': request.user.username, "site_key":site_key})
 
 def GalleryView(request):
     query = PaintingForSaleModel.objects.order_by('?')

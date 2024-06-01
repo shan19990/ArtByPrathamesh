@@ -24,12 +24,19 @@
                     <label for="message">Message</label>
                     <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
                 </div>
-                <br>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-transparent" style="border:solid;border-width: thin">Submit</button>
+                <div class="col-md-6 offset-md-3" style="padding: 10px 0px;">
+                    <div class="g-recaptcha" data-sitekey="{{ site_key }}" data-callback="onCaptchaSuccess" data-expired-callback="onCaptchaExpired"></div>
+                    {% if error_message %}
+                        <p class="text-danger">{{ error_message }}</p>
+                    {% endif %}
                 </div>
+                <div class="text-center">
+                    <button type="submit" id="submitButton" class="btn btn-primary col-6" style="border:solid;border-width: thin" disabled>Submit</button>
+                </div>
+            </div>
             </form>
         </div>
     </div>
 </div>
+<script src="{% static 'js/contact.js' %}"></script>
 {% endblock content %}
