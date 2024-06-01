@@ -14,6 +14,10 @@
   font-variation-settings: "slnt" 7;
 }
 
+.gluten:hover{
+  background-color: #c2a449;
+}
+
 .poetsen-one-regular {
   font-family: "Poetsen One", sans-serif;
   font-weight: 400;
@@ -704,3 +708,8 @@ body {
     font-size: 4rem; /* Enlarged font size */
   }
 }
+
+.dropdown-menu{
+  background-color: #FFEFC1;
+}
+
