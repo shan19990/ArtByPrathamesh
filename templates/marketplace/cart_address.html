@@ -1,0 +1,46 @@
+{% extends 'base/header_market.html' %}
+{% load static %}
+{% block content %}
+<br>
+<div class="container body">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="text-center mb-3">
+                <h4>Select a Shipping Address</h4>
+            </div>
+            <div class="text-center mb-3">
+                <a href="{% url 'address' %}" class="btn btn-transparent" style="border:solid;border-width: thin">Add New Address</a>
+            </div>
+            <div class="card mt-3 div-transparent">
+                <div class="card-body">
+                    {% if addresses %}
+                        <form id="addressForm" method="POST">
+                            {% csrf_token %}
+                            {% for address in addresses %}
+                                <div id="address_{{ address.id }}" class="card mb-3 div-transparent address-card" onclick="selectAddress('{{ address.id }}')">
+                                    <div class="card-body">
+                                        <p><strong>Street Address:</strong> {{ address.street_address }}</p>
+                                        <p><strong>City:</strong> {{ address.city }}</p>
+                                        <p><strong>State/Province:</strong> {{ address.state }}</p>
+                                        <p><strong>Postal/ZIP Code:</strong> {{ address.pincode }}</p>
+                                        <p><strong>Contact Phone Number:</strong> {{ address.contact }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-transparent" id="payButton" style="border:solid;border-width: thin" disabled>Pay</button>
+                            </div>
+                        </form>
+                    {% else %}
+                        <p>No addresses available.</p>
+                        <div class="text-center">
+                            <a href="{% url 'address' %}" class="btn btn-transparent" style="border:solid;border-width: thin">Add New Address</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>                
+        </div>            
+    </div>
+</div>
+<script src="{% static 'js/cart_address.js' %}"></script>
+{% endblock content %}

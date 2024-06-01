@@ -12,6 +12,12 @@ def LandingPageView(request):
 
 def CartView(request):
     return render(request,"marketplace/cart.html")
+
+def SelectAddressView(request):
+    user = request.user
+    addresses = AddressModel.objects.filter(user=user)
+    return render(request,"marketplace/cart_address.html",{"addresses":addresses})
+
 def ProfileView(request):
     if request.method == "POST":
         print(request.POST)

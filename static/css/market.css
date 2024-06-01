@@ -713,3 +713,18 @@ body {
   background-color: #FFEFC1;
 }
 
+.address-card {
+  border: 1px solid #000; /* Set initial border color */
+  cursor: pointer;
+  transition: border-color 0.3s ease-in-out; /* Add transition for border color */
+  margin-bottom: 15px; /* Add margin between address cards */
+  padding: 10px; /* Add padding to address cards */
+}
+
+.address-card.selected {
+  border: 2px solid #007bff; /* Change to thicker border for selected address */
+}
+
+.card-body {
+  padding: 20px; /* Add padding to card body */
+}

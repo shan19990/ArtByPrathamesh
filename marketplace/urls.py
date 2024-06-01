@@ -31,6 +31,7 @@ urlpatterns = [
     path("cart/",CartView,name="cart"),
     path('load_paintings/', load_paintings, name='load_paintings'),
     path('load_paintings_filters/', load_paintings_filters, name='load_paintings_filters'),
+    path('select_address/', SelectAddressView, name='select_address'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
