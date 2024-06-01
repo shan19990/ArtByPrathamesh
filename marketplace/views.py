@@ -68,12 +68,21 @@ def AddressDeleteView(request, id):
     AddressModel.objects.get(pk=id).delete()
     return redirect("address")
 
+from django.utils import timezone
+
 def ContactUsView(request):
     site_key = RECAPTCHA_PUBLIC_KEY
     
+    if 'form_submitted_expiry' in request.session:
+        expiry_time_str = request.session['form_submitted_expiry']
+        expiry_time = timezone.make_aware(timezone.datetime.strptime(expiry_time_str, '%Y-%m-%dT%H:%M:%S'))
+        
+        if timezone.now() >= expiry_time:
+            request.session['form_submitted'] = False
+            del request.session['form_submitted_expiry']
+
     if request.method == "POST":
-        if request.session['form_submitted'] :
-            print("Form already submitted Please wait")
+        if request.session.get('form_submitted', False):
             return redirect("landingpage")
         
         name = request.POST.get('name')
@@ -89,8 +98,9 @@ def ContactUsView(request):
         """
 
         subject = 'Contact Form'
-        to_list = [ EMAIL_HOST_USER ]
-        #send_mail(subject, email_body, EMAIL_HOST_USER, to_list, fail_silently=True)
+        to_list = [EMAIL_HOST_USER]
+        send_mail(subject, email_body, EMAIL_HOST_USER, to_list, fail_silently=True)
+        
         request.session['form_submitted'] = True
         expiry_time = timezone.now() + timezone.timedelta(minutes=30)  # Expires in 30 minutes
         request.session['form_submitted_expiry'] = expiry_time.strftime('%Y-%m-%dT%H:%M:%S')
@@ -100,7 +110,8 @@ def ContactUsView(request):
 
         return redirect("landingpage")
 
-    return render(request,"marketplace/contactus.html",{'username': request.user.username, "site_key":site_key})
+    return render(request, "marketplace/contactus.html", {'username': request.user.username, "site_key":site_key})
+
 
 def GalleryView(request):
     query = PaintingForSaleModel.objects.order_by('?')
