@@ -36,3 +36,24 @@ function closeProfileForm() {
     submitbutton.classList.add('d-none');
     closebutton.style.display = 'none';
 }
+/*
+document.addEventListener('DOMContentLoaded', function() {
+    var toastMessageInput = document.getElementById('toast-message');
+    if (toastMessageInput) {
+        var messages = toastMessageInput.value;
+        if (typeof messages !== 'undefined' && messages.length > 0) {
+            messages.forEach(function(message) {
+                toastr[message.tags](message.content);
+            });
+        }
+    }
+});
+*/
+
+function handleProfileUpdateResponse(data) {
+    if (data.toastr_level && data.toastr_content) {
+        toastr[data.toastr_level](data.toastr_content);
+        window.location.href = "{% url 'profile' %}";
+    }
+}
+

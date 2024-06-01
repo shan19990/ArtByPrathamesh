@@ -8,6 +8,10 @@ from django.core.mail import send_mail
 from yaphets.settings import EMAIL_HOST_USER,RECAPTCHA_PUBLIC_KEY
 from django.utils import timezone
 from django.core.serializers.json import DjangoJSONEncoder
+from django.contrib import messages
+from django import forms
+from django.http import JsonResponse
+from .models import PaintingForSaleModel
 
 # Create your views here.
 def LandingPageView(request):
@@ -24,49 +28,66 @@ def SelectAddressView(request):
 
 def ProfileView(request):
     if request.method == "POST":
-        print(request.POST)
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        email = request.POST.get('email')
-        user = User.objects.get(email=email)
-        user.first_name = first_name
-        user.last_name = last_name
-        user.save()
-        return redirect('profile')
+        form = forms.Form(request.POST)
+        if form.is_valid():
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            email = request.POST.get('email')
+            user = User.objects.get(email=email)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
+            messages.success(request, "Profile Update Successfully")
+            return redirect('profile')
+        else:
+            messages.error(request, "Something went wrong")
+            return redirect('profile')
 
-    return render(request,"marketplace/profile.html",{'username': request.user.username})
+    
+    # Return HTML template if not a POST request
+    return render(request, "marketplace/profile.html", {'username': request.user.username})
 
 def AddressView(request):
     user = request.user
     addresses = AddressModel.objects.filter(user=user)
     if request.method == "POST":
-        print(request.POST)
-        street = request.POST.get('street')
-        city = request.POST.get('city')
-        state = request.POST.get('state')
-        postal_code = request.POST.get('postal_code')
-        phone_number = request.POST.get('phone_number')
-        id = request.POST.get('form')
-        if id == "":
-            address = AddressModel.objects.create(user=request.user, street_address=street, city=city, state=state, pincode=postal_code, contact=phone_number)
-            if address is not None:
-                print("Address Added")
+        form = forms.Form(request.POST)
+        if form.is_valid():
+            street = request.POST.get('street')
+            city = request.POST.get('city')
+            state = request.POST.get('state')
+            postal_code = request.POST.get('postal_code')
+            phone_number = request.POST.get('phone_number')
+            id = request.POST.get('form')
+            if id == "":
+                address = AddressModel.objects.create(user=request.user, street_address=street, city=city, state=state, pincode=postal_code, contact=phone_number)
+                if address is not None:
+                    messages.success(request, "Address Added")
+                else:
+                    messages.error(request, "Error Adding Address")
             else:
-                print("Address Error")
-        else:
-            address = AddressModel.objects.get(pk=id)
-            address.street_address = street
-            address.city = city
-            address.state = state
-            address.pincode = postal_code
-            address.contact = phone_number
-            address.save()
-            print(address.contact)
+                address = AddressModel.objects.get(pk=id)
+                address.street_address = street
+                address.city = city
+                address.state = state
+                address.pincode = postal_code
+                address.contact = phone_number
+                address.save()
+                if address is not None:
+                    messages.success(request, "Address Edited")
+                else:
+                    messages.error(request, "Error Editing Address")
     return render(request,"marketplace/address.html",{"addresses":addresses,'username': request.user.username})
 
 def AddressDeleteView(request, id):
-    AddressModel.objects.get(pk=id).delete()
+    try:
+        address = AddressModel.objects.get(pk=id)
+        address.delete()
+        messages.warning(request, "Address Deleted")
+    except AddressModel.DoesNotExist:
+        messages.error(request, "Address does not exist")
     return redirect("address")
+
 
 from django.utils import timezone
 
@@ -83,7 +104,8 @@ def ContactUsView(request):
 
     if request.method == "POST":
         if request.session.get('form_submitted', False):
-            return redirect("landingpage")
+            messages.warning(request, "Please wait a while before sending another request")
+            return redirect("contact")
         
         name = request.POST.get('name')
         email = request.POST.get('email')
@@ -100,15 +122,12 @@ def ContactUsView(request):
         subject = 'Contact Form'
         to_list = [EMAIL_HOST_USER]
         send_mail(subject, email_body, EMAIL_HOST_USER, to_list, fail_silently=True)
-        
+        messages.success(request, "Your enquiry has been sent to us. We will get back to you soon")
         request.session['form_submitted'] = True
         expiry_time = timezone.now() + timezone.timedelta(minutes=30)  # Expires in 30 minutes
         request.session['form_submitted_expiry'] = expiry_time.strftime('%Y-%m-%dT%H:%M:%S')
 
-        # Optionally, you can set a custom JSON encoder to ensure compatibility
         request.session.encoder = DjangoJSONEncoder
-
-        return redirect("landingpage")
 
     return render(request, "marketplace/contactus.html", {'username': request.user.username, "site_key":site_key})
 
@@ -129,9 +148,6 @@ def load_paintings(request):
     paintings = PaintingForSaleModel.objects.all()[start_index:end_index]
     data = [{'id':painting.id,'title': painting.title, 'description': painting.description, 'cost': painting.cost, 'image_url': painting.image.url} for painting in paintings]
     return JsonResponse({'paintings': data})
-
-from django.http import JsonResponse
-from .models import PaintingForSaleModel
 
 def load_paintings_filters(request):
     # Get filter parameters from request

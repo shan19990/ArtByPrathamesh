@@ -8,7 +8,15 @@ from django.core.mail import send_mail
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-import json
+from django.contrib import messages
+from yaphets.settings import EMAIL_HOST_USER,RECAPTCHA_PUBLIC_KEY
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.auth.models import User
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.urls import reverse_lazy
+from django.core.mail import send_mail
+from django.conf import settings
 
 def LoginEmailView(request):
     site_key = settings.RECAPTCHA_PUBLIC_KEY
@@ -28,9 +36,10 @@ def LoginEmailView(request):
             user = authenticate(request,username=username,password=password)
             if user is not None:
                 login(request,user)
+                messages.success("Logged In")
                 return redirect("LandingPageView")
             else:
-                print("Incorrect")
+                messages.success("Username/Password is incorrect")
         else:
             captcha_error = 'reCAPTCHA verification failed. Please complete the CAPTCHA.'
 
@@ -52,8 +61,12 @@ def RegisterEmailView(request):
             password = request.POST.get('password')
             username = email.split('@')[0]
             user = User.objects.create(username=username,email=email)
-            user.set_password(password)
-            user.save()
+            if user is not None:
+                user.set_password(password)
+                user.save()
+                messages.success("Account Registerd")
+            else:
+                messages.success("Something went wrong")
             return redirect("userloginemail")
 
     return render(request, "user/email_register.html",{"site_key":site_key,"error_message":error_message})
@@ -68,23 +81,33 @@ def ForgetPasswordView(request):
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            return HttpResponse("User with this email does not exist.")
+            messages.error(request, "User with this email does not exist.")
+            return redirect("forgetpassword")
 
-        token_generator = PasswordResetTokenGenerator()
+        token_generator = PasswordResetTokenGeneratorCustom()
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         token = token_generator.make_token(user)
 
-        reset_url = f"http://example.com/reset-password/{uid.decode('utf-8')}/{token}/"  # Adjust the domain name
+        reset_url = f"{request.scheme}://{request.get_host()}/reset-password/{uid.decode('utf-8')}/{token}/"
 
-        subject = 'Password Reset Request'
-        message = f'Please click the link below to reset your password:\n\n{reset_url}'
-        from_email = 'duke.ghosh123@gmail.com'  # Make sure this email is configured to send from in your Django settings
-        to_email = user.email
-        send_mail(subject, message, from_email, [to_email])
+        subject = 'Contact Form'
+        to_list = [EMAIL_HOST_USER]
+        email_body = 'Please click the link below to reset your password'
+        send_mail(subject, email_body, EMAIL_HOST_USER, to_list, fail_silently=True)
+
+        messages.success(request, "Password reset link sent successfully.")
 
     return render(request, "user/forget_password.html", {"site_key": site_key})
 
 def LogoutView(request):
     logout(request)
+    messages.warning(request,"Logged Out")
     return redirect('landingpage')
 
+
+class PasswordResetTokenGeneratorCustom(PasswordResetTokenGenerator):
+    def _make_hash_value(self, user, timestamp):
+        return (
+            str(user.pk) + str(timestamp) +
+            str(user.is_active)
+        )

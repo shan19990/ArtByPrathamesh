@@ -100,7 +100,7 @@ function renderCartActions() {
 
     if (cart.length > 0) {
         // Render Proceed to Select Address button
-        cartActionsContainer.innerHTML = '<a href="/select_address/" class="btn btn-primary">Proceed to Select Address</a>';
+        cartActionsContainer.innerHTML = '<a href="/select_address/" class="btn btn-transparent" style="border:solid;border-width:thin;" id="submitButton" >Proceed to Select Address</a>';
     } else {
         // Render Empty Cart message
         cartActionsContainer.innerHTML = '<p>Empty Cart. <a href="/painting_for_sale/">Return to Shop</a></p>';
