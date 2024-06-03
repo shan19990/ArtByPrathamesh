@@ -198,39 +198,15 @@ function showDetails(imageUrl, title, description, cost, addToCart) {
     var item = cart.find(item => item.imageUrl === imageUrl);
     var quantity = item ? item.quantity : 0;
 
-    var modalBody = document.querySelector('.modal-body');
-    var quantityElement = document.getElementById('itemQuantity');
-    if (!quantityElement) {
-        quantityElement = document.createElement('p');
-        quantityElement.id = 'itemQuantity';
-        modalBody.appendChild(quantityElement);
-    }
-    quantityElement.textContent = "Quantity in cart: " + quantity;
-
-    var existingAddToCartButton = document.getElementById('addToCartButton');
-    var existingIncrementButton = document.getElementById('incrementButton');
-    var existingDecrementButton = document.getElementById('decrementButton');
-    var existingClearButton = document.getElementById('clearButton');
-
-    if (existingAddToCartButton) {
-        modalBody.removeChild(existingAddToCartButton);
-    }
-    if (existingIncrementButton) {
-        modalBody.removeChild(existingIncrementButton);
-    }
-    if (existingDecrementButton) {
-        modalBody.removeChild(existingDecrementButton);
-    }
-    if (existingClearButton) {
-        modalBody.removeChild(existingClearButton);
-    }
+    var buttonContainer = document.getElementById('buttonContainer');
+    buttonContainer.innerHTML = '';
 
     if (addToCart && quantity === 0) {
         var addToCartButton = document.createElement('button');
         addToCartButton.textContent = 'Add to Cart';
         addToCartButton.id = 'addToCartButton';
-        addToCartButton.className = 'btn btn-primary';
-        modalBody.appendChild(addToCartButton);
+        addToCartButton.className = 'btn btn-dark';
+        buttonContainer.appendChild(addToCartButton);
 
         addToCartButton.onclick = function() {
             addToCartFunction(imageUrl, title, description, cost);
@@ -241,19 +217,26 @@ function showDetails(imageUrl, title, description, cost, addToCart) {
         incrementButton.textContent = '+';
         incrementButton.id = 'incrementButton';
         incrementButton.className = 'btn btn-secondary';
-        modalBody.appendChild(incrementButton);
+        buttonContainer.appendChild(incrementButton);
+
+        var quantityInput = document.createElement('input');
+        quantityInput.type = 'number';
+        quantityInput.value = quantity;
+        quantityInput.id = 'quantityInput';
+        quantityInput.className = 'quantity-input';
+        buttonContainer.appendChild(quantityInput);
 
         var decrementButton = document.createElement('button');
         decrementButton.textContent = '-';
         decrementButton.id = 'decrementButton';
         decrementButton.className = 'btn btn-secondary';
-        modalBody.appendChild(decrementButton);
+        buttonContainer.appendChild(decrementButton);
 
         var clearButton = document.createElement('button');
         clearButton.textContent = 'Clear';
         clearButton.id = 'clearButton';
-        clearButton.className = 'btn btn-danger';
-        modalBody.appendChild(clearButton);
+        clearButton.className = 'btn btn-dark-brown';
+        buttonContainer.appendChild(clearButton);
 
         incrementButton.onclick = function() {
             incrementItem(imageUrl);
@@ -269,7 +252,32 @@ function showDetails(imageUrl, title, description, cost, addToCart) {
             clearItem(imageUrl);
             showDetails(imageUrl, title, description, cost, addToCart);
         };
+
+        quantityInput.onchange = function() {
+            var newQuantity = parseInt(quantityInput.value, 10);
+            if (newQuantity >= 0) {
+                updateItemQuantity(imageUrl, newQuantity);
+                showDetails(imageUrl, title, description, cost, addToCart);
+            }
+        };
     }
 
     jQuery('#pictureModal').modal('show');
+}
+
+function updateItemQuantity(imageUrl, newQuantity) {
+    var username = document.getElementById('username').value;
+    var cart = JSON.parse(localStorage.getItem('cart_' + username)) || [];
+    var itemIndex = cart.findIndex(item => item.imageUrl === imageUrl);
+
+    if (itemIndex !== -1) {
+        if (newQuantity > 0) {
+            cart[itemIndex].quantity = newQuantity;
+        } else {
+            cart.splice(itemIndex, 1);
+        }
+    }
+
+    localStorage.setItem('cart_' + username, JSON.stringify(cart));
+    updateCartCounter();
 }

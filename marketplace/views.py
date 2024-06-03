@@ -83,13 +83,11 @@ def AddressDeleteView(request, id):
     try:
         address = AddressModel.objects.get(pk=id)
         address.delete()
-        messages.warning(request, "Address Deleted")
+        messages.info(request, "Address Deleted")
     except AddressModel.DoesNotExist:
         messages.error(request, "Address does not exist")
     return redirect("address")
 
-
-from django.utils import timezone
 
 def ContactUsView(request):
     site_key = RECAPTCHA_PUBLIC_KEY
@@ -104,7 +102,7 @@ def ContactUsView(request):
 
     if request.method == "POST":
         if request.session.get('form_submitted', False):
-            messages.warning(request, "Please wait a while before sending another request")
+            messages.info(request, "Please wait a while before sending another request")
             return redirect("contact")
         
         name = request.POST.get('name')
@@ -123,10 +121,10 @@ def ContactUsView(request):
         to_list = [EMAIL_HOST_USER]
         send_mail(subject, email_body, EMAIL_HOST_USER, to_list, fail_silently=True)
         messages.success(request, "Your enquiry has been sent to us. We will get back to you soon")
+        
         request.session['form_submitted'] = True
         expiry_time = timezone.now() + timezone.timedelta(minutes=30)  # Expires in 30 minutes
         request.session['form_submitted_expiry'] = expiry_time.strftime('%Y-%m-%dT%H:%M:%S')
-
         request.session.encoder = DjangoJSONEncoder
 
     return render(request, "marketplace/contactus.html", {'username': request.user.username, "site_key":site_key})

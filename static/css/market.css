@@ -288,11 +288,62 @@ footer {
   margin: auto;
 }
 
+/* Modal Styles */
 .modal-content {
-  background-color: #ffffff; /* Set background color to white */
-  opacity: 1; /* Ensure full opacity */
+  background-color: rgba(255, 255, 255, 0.8); /* Opaque off-white */
 }
 
+.modal-header {
+  border-bottom: none; /* Remove the bottom border */
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.button-container .btn,
+.button-container .quantity-input {
+  flex: 1;
+  margin: 0 5px;
+  height: 40px;
+  width: 40px;
+}
+
+.quantity-input {
+  width: 50px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.btn-dark-brown {
+  background-color: #5A3E36;
+  color: white;
+  border: 1px solid #5A3E36; /* Ensure border is set initially */
+}
+
+.btn-dark-brown:hover {
+  background-color: transparent;
+  color: black;
+  border-color: #5A3E36;
+}
+
+#modalTitle {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+#modalDescription {
+  margin-top: 10px;
+}
+
+#modalCost {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
+}
 
 /* Loading overlay styles */
 #loading-overlay {

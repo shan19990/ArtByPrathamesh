@@ -62,32 +62,27 @@ function renderCartItems() {
     var cartItemsContainer = document.getElementById('cart-items');
     cartItemsContainer.innerHTML = ''; // Clear previous items
 
-    // Add flex and flex-wrap style to the container
-    cartItemsContainer.style.display = 'flex';
-    cartItemsContainer.style.flexWrap = 'nowrap';
-
     cart.forEach(function(item) {
         // Retrieve the quantity for the current item
         var quantity = item ? item.quantity : 0;
 
         var itemHtml = `
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <div class="card-body d-flex align-items-center justify-content-between">
-                        <div>
-                            <h5 class="card-title">${item.title}</h5>
-                            <p class="card-text">Cost: ${item.cost}</p>
-                            <p class="card-text">Quantity: <span id="quantity-${item.imageUrl}">${quantity}</span></p>
-                        </div>
-                        <div>
-                            <button class="btn btn-success mr-1" onclick="incrementItemCart('${item.imageUrl}')">+</button>
-                            <button class="btn btn-warning mx-1" onclick="decrementItemCart('${item.imageUrl}')">-</button>
-                            <button class="btn btn-danger" onclick="deleteItemCart('${item.imageUrl}')">Delete</button>
-                        </div>
+            <div class="card mb-3">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div>
+                        <h5 class="card-title">${item.title}</h5>
+                        <p class="card-text">Cost: ${item.cost}</p>
+                        <p class="card-text">Quantity: <span id="quantity-${item.imageUrl}">${quantity}</span></p>
+                    </div>
+                    <div class="btn-group" role="group" aria-label="Cart item controls">
+                        <button class="btn btn-success mr-1" onclick="incrementItemCart('${item.imageUrl}')">+</button>
+                        <button class="btn btn-warning mx-1" onclick="decrementItemCart('${item.imageUrl}')">-</button>
+                        <button class="btn btn-danger" onclick="deleteItemCart('${item.imageUrl}')">Delete</button>
                     </div>
                 </div>
             </div>
         `;
+
         cartItemsContainer.innerHTML += itemHtml;
     });
 }

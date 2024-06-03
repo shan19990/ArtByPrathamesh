@@ -1,0 +1,49 @@
+/* cart.css */
+
+.card {
+    margin-bottom: 10px;
+}
+
+.card-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.card-text {
+    margin: 5px 0;
+}
+
+.btn-group .btn {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    font-size: 1rem;
+}
+
+.btn-danger:hover {
+    background-color: transparent;
+    color: black;
+    border-color: #5A3E36;
+}
+
+.btn-group .btn {
+    height: 40px;
+    width: 80px; /* Increase the width as needed */
+    text-align: center;
+    font-size: 1rem;
+    padding-bottom: 41px;
+}
+
+/* CSS for the card body */
+.card-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
