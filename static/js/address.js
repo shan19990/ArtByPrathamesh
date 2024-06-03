@@ -20,6 +20,12 @@ function editAddress(street, city, state, postalCode, phoneNumber, id) {
     // Display the address form
     document.getElementById('addressForm').style.display = 'block';
     document.getElementById('AddressButton').classList.add('d-none');
+
+    // Get the top position of the form
+    var formTop = document.getElementById('addressForm').getBoundingClientRect().top;
+
+    // Scroll to a bit above the form
+    window.scrollBy({ top: formTop - 50, behavior: 'smooth' }); // Adjust the offset as needed
 }
 
 function clearAddress() {
@@ -31,3 +37,11 @@ function clearAddress() {
     document.getElementById('form-id').value = '';
 }
 
+document.addEventListener('DOMContentLoaded', checkQueryParams);
+
+function checkQueryParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('showForm')) {
+        showAddressForm();
+    }
+}

@@ -12,6 +12,7 @@ from django.contrib import messages
 from django import forms
 from django.http import JsonResponse
 from .models import PaintingForSaleModel
+import requests
 
 # Create your views here.
 def LandingPageView(request):
@@ -138,13 +139,43 @@ def GalleryView(request):
 def PaintingForSaleView(request):
     return render(request,"marketplace/painting_for_sale.html",{'username': request.user.username})
 
+def get_user_country(request):
+    # Get the user's IP address from the request
+    ip = request.META.get('REMOTE_ADDR')
+    # Use a geolocation API to get the user's country
+    response = requests.get(f'http://ipinfo.io/{ip}/json')
+    data = response.json()
+    return data.get('country')
+
+def adjust_cost_by_country(cost, country):
+    # Implement your logic for adjusting the cost based on the country
+    if country == 'US':
+        return cost * 1.1  # For example, 10% increase for US
+    elif country == 'IN':
+        return cost * 10.0  # For example, 10% discount for India
+    # Add more conditions as needed
+    return cost
+
 def load_paintings(request):
+    country = get_user_country(request)
+    print(country)
     page = request.GET.get('page', 1)
     paintings_per_page = 5
     start_index = (int(page) - 1) * paintings_per_page
     end_index = start_index + paintings_per_page
     paintings = PaintingForSaleModel.objects.all()[start_index:end_index]
-    data = [{'id':painting.id,'title': painting.title, 'description': painting.description, 'cost': painting.cost, 'image_url': painting.image.url} for painting in paintings]
+    
+    data = []
+    for painting in paintings:
+        adjusted_cost = adjust_cost_by_country(painting.cost, country)
+        data.append({
+            'id': painting.id,
+            'title': painting.title,
+            'description': painting.description,
+            'cost': adjusted_cost,
+            'image_url': painting.image.url
+        })
+    
     return JsonResponse({'paintings': data})
 
 def load_paintings_filters(request):

@@ -9,7 +9,7 @@
                 <h4>Select a Shipping Address</h4>
             </div>
             <div class="text-center mb-3">
-                <a href="{% url 'address' %}" class="btn btn-transparent" style="border:solid;border-width: thin">Add New Address</a>
+                <a href="{% url 'address' %}?showForm=true" class="btn btn-transparent" style="border:solid;border-width: thin">Add New Address</a>
             </div>
             <div class="card mt-3 div-transparent">
                 <div class="card-body">
@@ -33,9 +33,6 @@
                         </form>
                     {% else %}
                         <p>No addresses available.</p>
-                        <div class="text-center">
-                            <a href="{% url 'address' %}" class="btn btn-transparent" style="border:solid;border-width: thin">Add New Address</a>
-                        </div>
                     {% endif %}
                 </div>
             </div>                

@@ -13,8 +13,8 @@
 .card-title {
     font-size: 1.25rem;
     font-weight: bold;
+    margin: 0px 20px;
 }
-
 .card-text {
     margin: 5px 0;
 }
@@ -35,7 +35,7 @@
 
 .btn-group .btn {
     height: 40px;
-    width: 80px; /* Increase the width as needed */
+    width: 100px; /* Increase the width as needed */
     text-align: center;
     font-size: 1rem;
     padding-bottom: 41px;
