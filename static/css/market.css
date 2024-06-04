@@ -26,6 +26,10 @@
   background-color: #c2a449;
 }
 
+
+
+
+
 .poetsen-one-regular {
   font-family: "Poetsen One", sans-serif;
   font-weight: 400;
@@ -396,6 +400,26 @@ footer {
   .modal-content {
     backdrop-filter: blur(3px);
     background-color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .gluten {
+    font-family: "Gluten", cursive;
+    font-optical-sizing: auto;
+    font-weight: 260;
+    font-style: normal;
+    font-variation-settings: "slnt" 7;
+  }
+  
+  .gluten-without-background {
+    font-family: "Gluten", cursive;
+    font-optical-sizing: auto;
+    font-weight: 260;
+    font-style: normal;
+    font-variation-settings: "slnt" 7;
+  }
+  
+  .gluten:hover{
+    background-color: #c2a449;
   }
 }
 

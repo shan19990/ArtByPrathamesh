@@ -196,8 +196,6 @@ AUTH0_DOMAIN = "dev-c3kko51f2yr255ek.us.auth0.com"
 AUTH0_CLIENT_ID = "8zr0N9MOI30Ip7M06KEgDQYx02IgeK04"
 AUTH0_CLIENT_SECRET = "qowDbvM7NMk3r3c2R3w8N07rqEH_KNHFBwUIIgMLZElt8LFzXCG5QAMbxEvWu1g8"
 
-# settings.py
-
 # Email configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

@@ -18,6 +18,10 @@ from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.core.serializers.json import DjangoJSONEncoder
+from django.shortcuts import render
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.models import SocialToken
+from allauth.socialaccount.helpers import complete_social_login
 
 def LoginEmailView(request):
     site_key = settings.RECAPTCHA_PUBLIC_KEY
@@ -158,5 +162,3 @@ def reset_password_confirm_view(request, uidb64, token):
             messages.error(request, "Passwords do not match")
     
     return render(request, "user/reset_password.html")
-
-
