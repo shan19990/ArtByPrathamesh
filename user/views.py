@@ -21,7 +21,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.models import SocialToken
-from allauth.socialaccount.helpers import complete_social_login
+from marketplace.task import sendmail
 
 def LoginEmailView(request):
     site_key = settings.RECAPTCHA_PUBLIC_KEY
@@ -115,7 +115,7 @@ def ForgetPasswordView(request):
         subject = 'Reset Password'
         to_list = [email]  # Send the email to the user who requested the reset
         email_body = f'Hello {username},\n\nPlease click the link below to reset your password:\n{reset_url}\n\nIf you did not request a password reset, please ignore this email.'
-        send_mail(subject, email_body, EMAIL_HOST_USER, to_list, fail_silently=True)
+        sendmail.delay(subject, email_body, to_list)
         messages.success(request, "Password reset link sent successfully.")
         
 

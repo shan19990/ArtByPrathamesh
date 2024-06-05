@@ -14,7 +14,9 @@
         {% endfor %}
     </div>
 </div>
-
+<div class="loading-popup" id="loading-popup">
+    <p>Loading...</p>
+</div>
 <!-- Add a message prompting users to scroll for more items -->
 <div class="scroll-message text-center" id="scroll-message">
     <p>Scroll down for more items</p>
@@ -38,5 +40,7 @@
     </div>
 </div>
 <input type="hidden" id="current-page" value="1">
+<div id="inr_user_value" style="display:block;">{{ inr_user_value }}</div>
+<div id="symbol" style="display:block;">{{ symbol }}</div>
 <script src="{% static 'js/gallery.js' %}"></script>
 {% endblock content %}

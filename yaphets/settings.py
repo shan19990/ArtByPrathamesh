@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     'allauth.socialaccount.providers.oauth2',
     'imagekit',
+    'django_celery_results',
 ]
 
 SOCIALACCOUNT_LOGIN_ON_GET=True
@@ -186,6 +187,8 @@ SOCIAL_AUTH_BACKEND_ERROR_URL = "landingpage"
 RECAPTCHA_PUBLIC_KEY = '6LfuwtcpAAAAALw8h1T1EEE1u5xgaSwJRkIKmz-z'
 RECAPTCHA_PRIVATE_KEY = '6LfuwtcpAAAAABiXB9hoaQi0B22O1dE9Bl33hA6L'
 
+LOCATION_API_KEY = "XM5vHO6Y2hdGCjXABWhIb8N07XRCABiPoyx3hMXPTyIYBbonwj"
+
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
@@ -204,3 +207,14 @@ EMAIL_HOST_USER = 'shankhanil.ghosh123@gmail.com'
 EMAIL_HOST_PASSWORD = 'ovbxdszhzidoluwt'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'django-cache'
+
+CURRENCRY_API_KEY = "7ed0f8dc92754ba19a2545ac27ed9063"

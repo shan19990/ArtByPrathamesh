@@ -13,6 +13,10 @@ from django import forms
 from django.http import JsonResponse
 from .models import PaintingForSaleModel
 import requests
+from requests import get
+from django.conf import settings
+from .task import get_user_currency, sendmail
+
 
 # Create your views here.
 def LandingPageView(request):
@@ -120,7 +124,7 @@ def ContactUsView(request):
 
         subject = 'Contact Form'
         to_list = [EMAIL_HOST_USER]
-        send_mail(subject, email_body, EMAIL_HOST_USER, to_list, fail_silently=True)
+        sendmail.delay(subject, email_body, to_list)
         messages.success(request, "Your enquiry has been sent to us. We will get back to you soon")
         
         request.session['form_submitted'] = True
@@ -132,67 +136,38 @@ def ContactUsView(request):
 
 
 def GalleryView(request):
+    task_result = get_user_currency.delay()
+    result_dict = task_result.get()
+    symbol = result_dict['symbol']
+    inr_user_value = result_dict['inr_user_value']
+
     query = PaintingForSaleModel.objects.order_by('?')
     images = list(chain.from_iterable([query] * 3))
-    return render(request,"marketplace/gallery.html",{'username': request.user.username})
+    return render(request,"marketplace/gallery.html",{'inr_user_value': inr_user_value,"symbol":symbol})
 
 def PaintingForSaleView(request):
-    return render(request,"marketplace/painting_for_sale.html",{'username': request.user.username})
+    task_result = get_user_currency.delay()
+    result_dict = task_result.get()
+    symbol = result_dict['symbol']
+    inr_user_value = result_dict['inr_user_value']
 
-def get_user_country(request):
-    # Get the user's IP address from the request
-    ip = request.META.get('REMOTE_ADDR')
-    # Use a geolocation API to get the user's country
-    response = requests.get(f'http://ipinfo.io/{ip}/json')
-    data = response.json()
-    return data.get('country')
+    return render(request,"marketplace/painting_for_sale.html",{'inr_user_value': inr_user_value,"symbol":symbol})
 
-def adjust_cost_by_country(cost, country):
-    # Implement your logic for adjusting the cost based on the country
-    if country == 'US':
-        return cost * 1.1  # For example, 10% increase for US
-    elif country == 'IN':
-        return cost * 10.0  # For example, 10% discount for India
-    # Add more conditions as needed
-    return cost
+def get_currency_multiplier(request):
+    task_result = get_user_currency.delay()  # Run the task asynchronously
+    inr_user_value = task_result.get()
+    print(inr_user_value)
 
-def load_paintings(request):
-    country = get_user_country(request)
-    print(country)
-    page = request.GET.get('page', 1)
-    paintings_per_page = 5
-    start_index = (int(page) - 1) * paintings_per_page
-    end_index = start_index + paintings_per_page
-    paintings = PaintingForSaleModel.objects.all()[start_index:end_index]
-    
-    data = []
-    for painting in paintings:
-        adjusted_cost = adjust_cost_by_country(painting.cost, country)
-        data.append({
-            'id': painting.id,
-            'title': painting.title,
-            'description': painting.description,
-            'cost': adjusted_cost,
-            'image_url': painting.image.url
-        })
-    
-    return JsonResponse({'paintings': data})
+    return JsonResponse({'inr_user_value': inr_user_value})
 
 def load_paintings_filters(request):
-    # Get filter parameters from request
+
     style_filter = request.GET.get('style')
     sort_option = request.GET.get('sort_option')
-
-    print(style_filter,sort_option)
-
-    # Filter paintings based on parameters
     paintings = PaintingForSaleModel.objects.all()
-
     if style_filter:
         if style_filter != "all":
             paintings = paintings.filter(type=style_filter)
-
-    # Apply sorting based on sort_option
     if sort_option == 'price-high-low':
         paintings = paintings.order_by('-cost')
     elif sort_option == 'price-low-high':
@@ -202,16 +177,13 @@ def load_paintings_filters(request):
     elif sort_option == 'size-high-low':
         paintings = paintings.order_by('-height', '-width')
 
-    # Assuming you want to return 12 paintings per page
     paintings_per_page = 12
-
-    # Get the page number from the request, default to 1 if not provided
     page = int(request.GET.get('page', 1))
     start_index = (page - 1) * paintings_per_page
     end_index = start_index + paintings_per_page
 
-    # Slice the queryset to get the paintings for the current page
     paintings_for_page = paintings[start_index:end_index]
+
 
     # Serialize paintings data
     data = [{'id': painting.id, 'title': painting.title, 'description': painting.description, 'cost': painting.cost, 'image_url': painting.image.url, 'type': painting.type, 'height': painting.height, 'width': painting.width} for painting in paintings_for_page]

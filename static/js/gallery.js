@@ -27,11 +27,13 @@ $(document).ready(function() {
                     },
                     dataType: "json",
                     success: function(response) {
+                        var inr_user_value = document.getElementById('inr_user_value').textContent;  // Get inr_user_value from div
                         var paintings = response.paintings;
                         var html = '';
-        
+                        
                         paintings.forEach(function(painting) {
-                            html += '<div class="painting-card" data-image-url="' + painting.image_url + '" data-title="' + painting.title + '" data-description="' + painting.description + '" data-cost="' + painting.cost + '" onclick="showDetails(\'' + painting.image_url + '\', \'' + painting.title + '\', \'' + painting.description + '\', \'' + painting.cost + '\')">';
+                            cost = inr_user_value * painting.cost;
+                            html += '<div class="painting-card" data-image-url="' + painting.image_url + '" data-title="' + painting.title + '" data-description="' + painting.description + '" data-cost="' + cost + '" onclick="showDetails(\'' + painting.image_url + '\', \'' + painting.title + '\', \'' + painting.description + '\', \'' + cost + '\')">';
                             html += '<img src="' + painting.image_url + '" alt="' + painting.title + '">';
                             html += '</div>';
                         });
@@ -77,10 +79,11 @@ $(document).ready(function() {
 
 function showDetails(imageUrl, title, description, cost) {
     // Set modal content with picture details
+    var symbol = document.getElementById('symbol').textContent;
     document.getElementById('modalImage').src = imageUrl;
     document.getElementById('modalTitle').textContent = title;
     document.getElementById('modalDescription').textContent = description;
-    document.getElementById('modalCost').textContent = "Cost: " + cost;
+    document.getElementById('modalCost').textContent = "Cost: " + symbol + cost;
 
     // Open Bootstrap modal
     jQuery('#pictureModal').modal('show');

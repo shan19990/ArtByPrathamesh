@@ -29,7 +29,6 @@ urlpatterns = [
     path("gallery/",GalleryView,name="gallery"),
     path("painting_for_sale/",PaintingForSaleView,name="painting_for_sale"),
     path("cart/",CartView,name="cart"),
-    path('load_paintings/', load_paintings, name='load_paintings'),
     path('load_paintings_filters/', load_paintings_filters, name='load_paintings_filters'),
     path('select_address/', SelectAddressView, name='select_address'),
 

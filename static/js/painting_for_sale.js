@@ -125,9 +125,11 @@ $(document).ready(function() {
                         var paintings = response.paintings;
                         var html = '';
                         var addToCart = !isGalleryPage;
+                        var inr_user_value = document.getElementById('inr_user_value').textContent;  // Get inr_user_value from div
         
                         paintings.forEach(function(painting) {
-                            html += '<div class="painting-card" data-image-url="' + painting.image_url + '" data-title="' + painting.title + '" data-description="' + painting.description + '" data-cost="' + painting.cost + '" onclick="showDetails(\'' + painting.image_url + '\', \'' + painting.title + '\', \'' + painting.description + '\', \'' + painting.cost + '\', ' + addToCart + ')">';
+                            var cost = painting.cost * inr_user_value;  // Multiply cost with inr_user_value
+                            html += '<div class="painting-card" data-image-url="' + painting.image_url + '" data-title="' + painting.title + '" data-description="' + painting.description + '" data-cost="' + cost + '" onclick="showDetails(\'' + painting.image_url + '\', \'' + painting.title + '\', \'' + painting.description + '\', \'' + cost + '\', ' + addToCart + ')">';
                             html += '<img src="' + painting.image_url + '" alt="' + painting.title + '">';
                             html += '</div>';
                         });
@@ -189,10 +191,11 @@ $(document).ready(function() {
 
 function showDetails(imageUrl, title, description, cost, addToCart) {
     var username = document.getElementById('username').value;
+    var symbol = document.getElementById('symbol').textContent;  // Get inr_user_value from div
     document.getElementById('modalImage').src = imageUrl;
     document.getElementById('modalTitle').textContent = title;
     document.getElementById('modalDescription').textContent = description;
-    document.getElementById('modalCost').textContent = "Cost: " + cost;
+    document.getElementById('modalCost').textContent = "Cost: " + symbol + cost;
 
     var cart = JSON.parse(localStorage.getItem('cart_' + username)) || [];
     var item = cart.find(item => item.imageUrl === imageUrl);
