@@ -15,7 +15,6 @@ from .models import PaintingForSaleModel
 import requests
 from requests import get
 from django.conf import settings
-from .task import get_user_currency, sendmail
 
 
 # Create your views here.
@@ -124,7 +123,7 @@ def ContactUsView(request):
 
         subject = 'Contact Form'
         to_list = [EMAIL_HOST_USER]
-        sendmail.delay(subject, email_body, to_list)
+        send_mail(subject, email_body, EMAIL_HOST_USER, to_list, fail_silently=True)
         messages.success(request, "Your enquiry has been sent to us. We will get back to you soon")
         
         request.session['form_submitted'] = True
@@ -136,29 +135,12 @@ def ContactUsView(request):
 
 
 def GalleryView(request):
-    task_result = get_user_currency.delay()
-    result_dict = task_result.get()
-    symbol = result_dict['symbol']
-    inr_user_value = result_dict['inr_user_value']
-
     query = PaintingForSaleModel.objects.order_by('?')
     images = list(chain.from_iterable([query] * 3))
-    return render(request,"marketplace/gallery.html",{'inr_user_value': inr_user_value,"symbol":symbol})
+    return render(request,"marketplace/gallery.html")
 
 def PaintingForSaleView(request):
-    task_result = get_user_currency.delay()
-    result_dict = task_result.get()
-    symbol = result_dict['symbol']
-    inr_user_value = result_dict['inr_user_value']
-
-    return render(request,"marketplace/painting_for_sale.html",{'inr_user_value': inr_user_value,"symbol":symbol})
-
-def get_currency_multiplier(request):
-    task_result = get_user_currency.delay()  # Run the task asynchronously
-    inr_user_value = task_result.get()
-    print(inr_user_value)
-
-    return JsonResponse({'inr_user_value': inr_user_value})
+    return render(request,"marketplace/painting_for_sale.html")
 
 def load_paintings_filters(request):
 
