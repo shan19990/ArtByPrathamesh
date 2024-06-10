@@ -26,7 +26,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR,"templates")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'django-insecure-wecd-et*0#dvsbb5k=5=745opu)(glsyc%1o9zwl4ggu#0sg$('
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -189,7 +189,7 @@ SOCIAL_AUTH_BACKEND_ERROR_URL = "landingpage"
 RECAPTCHA_PUBLIC_KEY = '6LfuwtcpAAAAALw8h1T1EEE1u5xgaSwJRkIKmz-z'
 RECAPTCHA_PRIVATE_KEY = '6LfuwtcpAAAAABiXB9hoaQi0B22O1dE9Bl33hA6L'
 
-LOCATION_API_KEY = os.environ.get('LOCATION_API_KEY')
+LOCATION_API_KEY = "XM5vHO6Y2hdGCjXABWhIb8N07XRCABiPoyx3hMXPTyIYBbonwj"
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
@@ -197,16 +197,16 @@ if ENV_FILE:
 
 
 # Load Auth0 application settings into memory
-AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
-AUTH0_CLIENT_ID = os.environ.get('AUTH0_CLIENT_ID')
-AUTH0_CLIENT_SECRET = os.environ.get('AUTH0_CLIENT_SECRET')
+AUTH0_DOMAIN = "dev-c3kko51f2yr255ek.us.auth0.com"
+AUTH0_CLIENT_ID = "8zr0N9MOI30Ip7M06KEgDQYx02IgeK04"
+AUTH0_CLIENT_SECRET = "qowDbvM7NMk3r3c2R3w8N07rqEH_KNHFBwUIIgMLZElt8LFzXCG5QAMbxEvWu1g8"
 
 # Email configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587  # TLS port
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = 'shankhanil.ghosh123@gmail.com'
+EMAIL_HOST_PASSWORD = 'ovbxdszhzidoluwt'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
