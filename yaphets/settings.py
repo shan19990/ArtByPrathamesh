@@ -114,15 +114,10 @@ WSGI_APPLICATION = 'yaphets.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'yaphets_prod',
-        'USER': 'duke',
-        'PASSWORD': 'Duke@00Duke',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 
 # Password validation
@@ -161,8 +156,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-
-STATIC_ROOT = os.path.join(BASE_DIR,"staticfiles")
 
 # Additional locations of static files
 STATICFILES_DIRS = [
