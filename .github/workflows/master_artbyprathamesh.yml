@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - ArtByPrathamesh
+name: Build and deploy Python app to Azure Web App - artbyprathamesh
 
 on:
   push:
@@ -29,9 +29,6 @@ jobs:
       
       - name: Install dependencies
         run: pip install -r requirements.txt
-
-      - name: Run collectstatic
-        run: python manage.py collectstatic
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
@@ -68,14 +65,14 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_12CF9E83AB6C41CE896CAD69370500E8 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A81FB39B76C0430589CD40D4FA2CD31C }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1B79160F538947F88B5ADCD3F7CD5DF2 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_FF666581DF3A425BBC75CEF80EBD677B }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CDB34EB69B2A496CB78F059E5814B40D }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_2A84CCFC025C4D519760C30792E62361 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'ArtByPrathamesh'
+          app-name: 'artbyprathamesh'
           slot-name: 'Production'
           
