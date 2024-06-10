@@ -220,3 +220,8 @@ CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'django-cache'
 
 CURRENCRY_API_KEY = os.environ.get('CURRENCRY_API_KEY')
+
+try:
+    from .local_settings import *
+except:
+    pass
