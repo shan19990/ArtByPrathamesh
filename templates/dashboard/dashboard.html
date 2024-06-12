@@ -1,0 +1,46 @@
+{% extends 'base/header_dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          Orders In Progress
+        </div>
+        <div class="card-body">
+          <!-- Add your orders table here -->
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          Sales Chart
+        </div>
+        <div class="card-body">
+          <div id="container" style="width: 100%;">
+            <canvas id="sales-chart" data-url="{% url 'sales-chart' %}"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          Orders Completed
+        </div>
+        <div class="card-body">
+          <!-- Add your completed orders table here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script src="{% static 'js/dashboard_home.js' %}"></script>
+{% endblock %}

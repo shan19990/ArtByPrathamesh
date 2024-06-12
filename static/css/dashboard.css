@@ -1,0 +1,13 @@
+.gallery-item {
+    margin-bottom: 20px;
+    height: 300px; /* Fixed height */
+}
+
+.gallery-image {
+    height: 200px; /* Fixed height */
+    object-fit: cover; /* Ensure the image covers the entire space */
+}
+
+.card-body {
+    height: 100px; /* Fixed height */
+}

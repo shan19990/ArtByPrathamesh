@@ -14,7 +14,9 @@ from django.http import JsonResponse
 from .models import PaintingForSaleModel
 import requests
 from requests import get
+from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from .decorators import custom_login_required
 
 
 # Create your views here.
@@ -22,14 +24,17 @@ def LandingPageView(request):
     images = GalleryImagesModel.objects.order_by('?')
     return render(request, "marketplace/landingpage.html",{"images":images,'username': request.user.username})
 
+@custom_login_required
 def CartView(request):
     return render(request,"marketplace/cart.html",{'username': request.user.username})
 
+@custom_login_required
 def SelectAddressView(request):
     user = request.user
     addresses = AddressModel.objects.filter(user=user)
     return render(request,"marketplace/cart_address.html",{"addresses":addresses})
 
+@custom_login_required
 def ProfileView(request):
     if request.method == "POST":
         form = forms.Form(request.POST)
@@ -51,6 +56,7 @@ def ProfileView(request):
     # Return HTML template if not a POST request
     return render(request, "marketplace/profile.html", {'username': request.user.username})
 
+@custom_login_required
 def AddressView(request):
     user = request.user
     addresses = AddressModel.objects.filter(user=user)
@@ -83,6 +89,7 @@ def AddressView(request):
                     messages.error(request, "Error Editing Address")
     return render(request,"marketplace/address.html",{"addresses":addresses,'username': request.user.username})
 
+@custom_login_required
 def AddressDeleteView(request, id):
     try:
         address = AddressModel.objects.get(pk=id)
@@ -139,6 +146,7 @@ def GalleryView(request):
     images = list(chain.from_iterable([query] * 3))
     return render(request,"marketplace/gallery.html")
 
+@custom_login_required
 def PaintingForSaleView(request):
     return render(request,"marketplace/painting_for_sale.html")
 

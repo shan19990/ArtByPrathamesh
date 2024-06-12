@@ -1,0 +1,23 @@
+{% extends 'base/header_dashboard.html' %}
+{% load socialaccount %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h1 class="mt-4 mb-4">Gallery Images</h1>
+    <a href="#" class="btn btn-primary mb-4">Add Image</a>
+    <div class="row">
+        {% for image in images %}
+            <div class="col-md-4">
+                <div class="card gallery-item">
+                    <img src="{{ image.image.url }}" class="card-img-top gallery-image" alt="{{ image.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ image.title }}</h5>
+                        <a href="#" class="btn btn-primary mr-2">Edit</a>
+                        <a href="#" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

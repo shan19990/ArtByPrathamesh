@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user',
     'marketplace',
+    'dashboard',
     'django_recaptcha',
     'django.contrib.sites',
     "allauth", # new
@@ -55,8 +56,6 @@ INSTALLED_APPS = [
     "allauth.socialaccount", # new
     "allauth.socialaccount.providers.google",
     'allauth.socialaccount.providers.oauth2',
-    'imagekit',
-    'django_celery_results',
 ]
 
 SOCIALACCOUNT_LOGIN_ON_GET=True
@@ -179,8 +178,11 @@ AUTHENTICATION_BACKENDS = [
 
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 ACCOUNT_EMAIL_VERIFICATION = "none"
+
 LOGIN_REDIRECT_URL = "landingpage"
 LOGOUT_REDIRECT_URL = "landingpage"
+LOGIN_URL = '/'
+
 ACCOUNT_LOGOUT_ON_GET = True
 SOCIAL_AUTH_BACKEND_ERROR_URL = "landingpage"
 

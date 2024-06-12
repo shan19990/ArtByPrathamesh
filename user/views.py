@@ -21,6 +21,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.models import SocialToken
+from allauth.account.models import EmailAddress, EmailConfirmation
 
 def LoginEmailView(request):
     site_key = settings.RECAPTCHA_PUBLIC_KEY
@@ -98,10 +99,16 @@ def ForgetPasswordView(request):
         email = request.POST.get('email')
         try:
             user = User.objects.get(email=email)
+            email_addresses = EmailAddress.objects.filter(email=email)
+            if email_addresses is not None:
+                messages.info(request,f"{email} is registered with us using 3rd party authentication. We are unable to reset the password")
+                return redirect('userlogin')
             
         except User.DoesNotExist:
             messages.error(request, "User with this email does not exist.")
             return redirect("forgetpassword")
+        
+        
         
         username = user.username or email.split('@')[0]
 
