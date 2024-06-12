@@ -30,6 +30,7 @@ urlpatterns = [
     path("painting_for_sale/",PaintingForSaleView,name="painting_for_sale"),
     path("cart/",CartView,name="cart"),
     path('load_paintings_filters/', load_paintings_filters, name='load_paintings_filters'),
+    path('load_gallery_images/', load_gallery_images, name='load_gallery_images'),
     path('select_address/', SelectAddressView, name='select_address'),
 
 

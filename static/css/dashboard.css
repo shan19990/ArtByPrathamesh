@@ -11,3 +11,7 @@
 .card-body {
     height: 100px; /* Fixed height */
 }
+
+#imageForm{
+    height: 200px;
+}

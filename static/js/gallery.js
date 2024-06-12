@@ -20,7 +20,7 @@ $(document).ready(function() {
                 loading = true;
                 jQuery.noConflict();
                 $.ajax({
-                    url: "/load_paintings_filters/",
+                    url: "/load_gallery_images/",
                     type: "GET",
                     data: {
                         'page': page,
@@ -30,8 +30,8 @@ $(document).ready(function() {
                         var paintings = response.paintings;
                         var html = '';
                         
-                        paintings.forEach(function(painting) {
-                            html += '<div class="painting-card" data-image-url="' + painting.image_url + '" data-title="' + painting.title + '" data-description="' + painting.description + '" data-cost="' + painting.cost + '" onclick="showDetails(\'' + painting.image_url + '\', \'' + painting.title + '\', \'' + painting.description + '\', \'' + painting.cost + '\')">';
+                        paintings.forEach(function(painting) {html += '<div class="painting-card" data-image-url="' + painting.image_url + '" data-title="' + painting.title + '" onclick="showDetails(\'' + painting.image_url + '\', \'' + painting.title + '\')">';
+                            
                             html += '<img src="' + painting.image_url + '" alt="' + painting.title + '">';
                             html += '</div>';
                         });
@@ -79,8 +79,6 @@ function showDetails(imageUrl, title, description, cost) {
     // Set modal content with picture details
     document.getElementById('modalImage').src = imageUrl;
     document.getElementById('modalTitle').textContent = title;
-    document.getElementById('modalDescription').textContent = description;
-    document.getElementById('modalCost').textContent = "Cost: " + cost;
 
     // Open Bootstrap modal
     jQuery('#pictureModal').modal('show');

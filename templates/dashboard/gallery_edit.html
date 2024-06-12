@@ -1,0 +1,45 @@
+{% extends 'base/header_dashboard.html' %}
+{% load socialaccount %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h1 class="mt-4 mb-4">Edit Image</h1>
+    <div class="card div-transparent">
+        <div class="card-body">
+            <h4 class="card-title">Image Details</h4>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <label for="title" class="col-sm-3 col-form-label">Title:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="title" id="title" placeholder="Title" value="{{ gallery_item.title }}" required>
+                    </div>
+                </div>
+                <br>
+                <div class="form-group row">
+                    <label for="image" class="col-sm-3 col-form-label">Image:</label>
+                    <div class="col-sm-9">
+                        <input type="file" class="form-control" name="image" id="image" accept="image/*" onchange="previewImage()">
+                    </div>
+                </div>
+                <br>
+                <div class="form-group row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-9">
+                        <img id="imagePreview" src="{{ gallery_item.image.url }}" alt="Image Preview" style="max-width: 100%; height: auto;"/>
+                    </div>
+                </div>
+                <br>
+                <div class="form-group row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-9">
+                        <button type="submit" class="btn btn-transparent" style="border:solid;border-width: thin">Submit</button>
+                        <a href="#" class="btn btn-transparent" style="border:solid;border-width: thin">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/dashboard/gallery.js' %}"></script>
+{% endblock content %}

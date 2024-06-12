@@ -3,43 +3,38 @@
 {% load static %}
 {% block content %}
 <div class="container">
-    <h1 class="mt-4 mb-4">Painting for Sale</h1>
-    <div class="text-center mb-3">
-        <button id="ImageButton" class="btn btn-transparent" style="border:solid;border-width: thin" onclick="showImageForm()">Add Painting</button>
-    </div>
-    <div class="card div-transparent" style="display:none; height: 600px;" id="imageForm">
-        <a id="cross-close" class="position-absolute top-0 end-0 m-3" onclick="closeImageForm()">
-            <i class="fa fa-times fa-1x" aria-hidden="true"></i>
-        </a>                
-        <div class="card-body" id="imageFormContent">
+    <h1 class="mt-4 mb-4">Edit Image</h1>
+    <div class="card div-transparent">
+        <div class="card-body">
             <h4 class="card-title">Image Details</h4>
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group row">
                     <label for="title" class="col-sm-3 col-form-label">Title:</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="title" id="title" placeholder="Title" required>
+                        <input type="text" class="form-control" value="{{ gallery_item.title }}" name="title" id="title" placeholder="Title" required>
                     </div>
                 </div>
                 <br>
+                
                 <div class="form-group row">
                     <label for="description" class="col-sm-3 col-form-label">Description:</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="description" id="description" placeholder="Description" required>
+                        <input type="text" class="form-control" value="{{ gallery_item.description}}" name="description" id="description" placeholder="Description" required>
                     </div>
                 </div>
                 <br>
                 <div class="form-group row">
                     <label for="height" class="col-sm-3 col-form-label">Height:</label>
                     <div class="col-sm-9">
-                        <input type="number" class="form-control" name="height" id="height" placeholder="Height (in inches)" required>
+                        <input type="number" class="form-control" value="{{ gallery_item.height}}" name="height" id="height" placeholder="Height (in inches)" required>
                     </div>
                 </div>
                 <br>
                 <div class="form-group row">
                     <label for="width" class="col-sm-3 col-form-label">Width:</label>
                     <div class="col-sm-9">
-                        <input type="number" class="form-control" name="width" id="width" placeholder="Width (in inches)" required>
+                        <input type="number" class="form-control" value="{{ gallery_item.width}}" name="width" id="width" placeholder="Width (in inches)" required>
                     </div>
                 </div>
                 <br>
@@ -47,12 +42,12 @@
                     <label for="type" class="col-sm-3 col-form-label">Type:</label>
                     <div class="col-sm-9">
                         <select class="form-control" name="type" id="type" required>
-                            <option value="acrylic">Acrylic Painting</option>
-                            <option value="oil">Oil Painting</option>
-                            <option value="watercolour">Water Colour Painting</option>
-                            <option value="pencilcolour">Pencil Colour Painting</option>
-                            <option value="charcoal">Charcoal Painting</option>
-                            <option value="pencilpotrait">Pencil Potrait</option>
+                            <option value="acrylic" {% if gallery_item.type == 'acrylic' %}selected{% endif %}>Acrylic Painting</option>
+                            <option value="oil" {% if gallery_item.type == "oil" %}selected{% endif %}>Oil Painting</option>
+                            <option value="watercolour" {% if gallery_item.type == "watercolour" %}selected{% endif %}>Water Colour Painting</option>
+                            <option value="pencilcolour" {% if gallery_item.type == "pencilcolour" %}selected{% endif %}>Pencil Colour Painting</option>
+                            <option value="charcoal" {% if gallery_item.type == "charcoal" %}selected{% endif %}>Charcoal Painting</option>
+                            <option value="pencilpotrait" {% if gallery_item.type == "pencilpotrait" %}selected{% endif %}>Pencil Potrait</option>
                         </select>
                     </div>
                 </div>
@@ -60,14 +55,21 @@
                 <div class="form-group row">
                     <label for="cost" class="col-sm-3 col-form-label">Cost:</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="cost" id="cost" placeholder="Cost" required>
+                        <input type="text" class="form-control" value="{{ gallery_item.cost}}" name="cost" id="cost" placeholder="Cost" required>
                     </div>
                 </div>
                 <br>
                 <div class="form-group row">
                     <label for="image" class="col-sm-3 col-form-label">Image:</label>
                     <div class="col-sm-9">
-                        <input type="file" class="form-control" name="image" id="image" accept="image/*">
+                        <input type="file" class="form-control" name="image" id="image" accept="image/*" onchange="previewImage()">
+                    </div>
+                </div>
+                <br>
+                <div class="form-group row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-9">
+                        <img id="imagePreview" src="{{ gallery_item.image.url }}" alt="Image Preview" style="max-width: 100%; height: auto;"/>
                     </div>
                 </div>
                 <br>
@@ -85,22 +87,8 @@
                         <button type="button" onclick="clearPaintingForm()" class="btn btn-transparent" style="border:solid;border-width: thin">Clear</button>
                     </div>
                 </div>
-            </form>            
+            </form>
         </div>
-    </div>
-    <div class="row" id="galleryRow">
-        {% for item in painting_for_sale_items %}
-            <div class="col-md-4">
-                <div class="card gallery-item">
-                    <img src="{{ item.image.url }}" class="card-img-top gallery-image" alt="{{ item.title }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ item.title }}</h5>
-                        <a href="{% url 'dashboard_painting_for_sale_edit' item.id %}" class="btn btn-dark">Edit</a>
-                        <a href="{% url 'dashboard_painting_for_sale_delete' item.id %}" class="btn btn-dark">Delete</a>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
     </div>
 </div>
 <script src="{% static 'js/dashboard/painting.js' %}"></script>

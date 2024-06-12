@@ -142,8 +142,6 @@ def ContactUsView(request):
 
 
 def GalleryView(request):
-    query = PaintingForSaleModel.objects.order_by('?')
-    images = list(chain.from_iterable([query] * 3))
     return render(request,"marketplace/gallery.html")
 
 @custom_login_required
@@ -174,8 +172,23 @@ def load_paintings_filters(request):
 
     paintings_for_page = paintings[start_index:end_index]
 
-
     # Serialize paintings data
     data = [{'id': painting.id, 'title': painting.title, 'description': painting.description, 'cost': painting.cost, 'image_url': painting.image.url, 'type': painting.type, 'height': painting.height, 'width': painting.width} for painting in paintings_for_page]
 
     return JsonResponse({'paintings': data})
+
+def load_gallery_images(request):
+    gallery_images = GalleryImagesModel.objects.all()
+    
+    paintings_per_page = 12
+    page = int(request.GET.get('page', 1))
+    start_index = (page - 1) * paintings_per_page
+    end_index = start_index + paintings_per_page
+
+    paintings_for_page = gallery_images[start_index:end_index]
+
+    # Serialize paintings data
+    data = [{'title': painting.title, 'image_url': painting.image.url} for painting in paintings_for_page]
+
+    return JsonResponse({'paintings': data})
+

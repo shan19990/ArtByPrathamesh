@@ -1,0 +1,63 @@
+{% extends 'base/header_dashboard.html' %}
+{% load static %}
+{% block content %}
+<br>
+<div class="container body" style="padding-bottom: 300px;">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card div-transparent">
+                <div class="card-body">
+                    <h4 class="card-title">User Profile</h4>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group row">
+                            <label for="firstname" class="col-sm-3 col-form-label">First Name:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="first_name" id="firstname"
+                                    value="{{ user.first_name }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lastname" class="col-sm-3 col-form-label">Last Name:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="last_name" id="lastname"
+                                    value="{{ user.last_name }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="email" class="col-sm-3 col-form-label">Email:</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control" id="email" name="email"
+                                    value="{{ user.email }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="staff" class="col-sm-3 col-form-label">Staff:</label>
+                            <div class="col-sm-9">
+                                <input type="checkbox" class="form-check-input" id="staffCheckbox" name="is_staff"
+                                    {% if user.is_staff %} checked {% endif %}>
+                                <label class="form-check-label" for="staffCheckbox">Is Staff</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="superuser" class="col-sm-3 col-form-label">Superuser:</label>
+                            <div class="col-sm-9">
+                                <input type="checkbox" class="form-check-input" id="superuserCheckbox" name="is_superuser"
+                                    {% if user.is_superuser %} checked {% endif %}>
+                                <label class="form-check-label" for="superuserCheckbox">Is Superuser</label>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group row">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-transparent" style="border:solid;border-width:thin;" id="submitButton">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/dashboard/user.js' %}"></script>
+{% endblock content %}
