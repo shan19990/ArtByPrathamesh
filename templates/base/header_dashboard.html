@@ -32,13 +32,12 @@
 </div>
     
     <div style="background-color: #FFEFC1; margin-bottom: 10px;">
-        <div class="container">
-            <div class="row justify-content-between align-items-center mt-5">
-                {% if not user.is_authenticated %}
+        <div class="fixed-center-container">
+            {% if not user.is_authenticated %}
                 <div class="col-auto">
                     <a class="btn btn-transparent poetsen-one-regular" href="{% url 'userlogin' %}">Login</a>
                 </div>
-                {% else %}
+            {% else %}
                 <div class="col-auto">
                     <div class="dropdown">
                         <button class="btn btn-transparent gluten dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -53,8 +52,9 @@
                         </div>
                     </div>
                 </div>
-                {% endif %}
-            </div>
+            {% endif %}
+        </div>        
+        <div class="container">
             <div class="row justify-content-between align-items-center mt-8">
                 <div class="col-auto mx-auto text-center"> <!-- Center the content horizontally -->
                     <a href="{% url 'landingpage' %}" class="icon-title">
