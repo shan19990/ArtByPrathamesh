@@ -47,6 +47,33 @@
                                 <label class="form-check-label" for="superuserCheckbox">Is Superuser</label>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="banned" class="col-sm-3 col-form-label">Banned:</label>
+                            <div class="col-sm-9">
+                                <input type="checkbox" class="form-check-input" id="bannedCheckbox" name="is_banned"
+                                    {% if user.banned %} checked {% endif %}>
+                                <label class="form-check-label" for="bannedCheckbox">Banned</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="reason" class="col-sm-3 col-form-label">Reason:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="reason" name="reason"
+                                    {% if not user.banned %}
+                                        disabled value=""
+                                    {% else %}
+                                        value="{{ user.ban_reason }}"
+                                    {% endif %}>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="reason" class="col-sm-3 col-form-label">Banned Till:</label>
+                            <div class="col-sm-9">
+                                <input type="date" class="form-control" id="till" name="till"
+                                       {% if not user.banned %} disabled {% endif %}
+                                       value="{% if user.banned_till %}{{ user.banned_till|date:"Y-m-d" }}{% endif %}">
+                            </div>
+                        </div>                        
                         <br>
                         <div class="form-group row">
                             <div class="text-center">
@@ -59,5 +86,27 @@
         </div>
     </div>
 </div>
-<script src="{% static 'js/dashboard/user.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const bannedCheckbox = document.getElementById('bannedCheckbox');
+        const reasonField = document.getElementById('reason');
+        const datetillField = document.getElementById('till');
+
+        bannedCheckbox.addEventListener('change', function () {
+            if (this.checked) {
+                reasonField.disabled = false;
+                reasonField.required = true;
+                datetillField.disabled = false;
+                datetillField.required = true;
+            } else {
+                reasonField.disabled = true;
+                reasonField.required = false;
+                reasonField.value = '';
+                datetillField.disabled = true;
+                datetillField.required = false;
+                datetillField.value = '';
+            }
+        });
+    });
+</script>
 {% endblock content %}

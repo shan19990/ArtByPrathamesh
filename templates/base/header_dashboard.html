@@ -21,6 +21,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Courgette&family=Luckiest+Guy&family=Satisfy&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Merienda:wght@300..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Merienda:wght@300&family=Pinyon+Script&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <title>Art by Prathamesh</title>
 </head>
@@ -48,9 +49,6 @@
                             {% endif %}
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item drop-down-button gluten" href="{% url 'profile' %}" >Profile</a>
-                            <a class="dropdown-item drop-down-button gluten" href="{% url 'address' %}">Address</a>
-                            <a class="dropdown-item drop-down-button gluten" href="#">Orders</a>
                             <a class="dropdown-item drop-down-button gluten" href="{% url 'userlogout' %}">Logout</a>
                         </div>
                     </div>

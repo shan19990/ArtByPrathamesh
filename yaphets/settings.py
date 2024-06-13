@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'user',
     'marketplace',
     'dashboard',
+    'events',
     'django_recaptcha',
     'django.contrib.sites',
     "allauth", # new
@@ -85,6 +86,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+    'user.middleware.BannedUserMiddleware',
+    'user.middleware.UserCreationEventMiddleware',
 ]
 
 ROOT_URLCONF = 'yaphets.urls'
@@ -220,8 +223,3 @@ CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'django-cache'
 
 CURRENCRY_API_KEY = os.environ.get('CURRENCRY_API_KEY')
-
-try:
-    from .local_settings import *
-except:
-    pass

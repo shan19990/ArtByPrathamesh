@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from marketplace.models import *
+from user.models import *
+from django.contrib import messages
+from events.models import *
 
 def dashboard(request):
-    return render(request, 'dashboard/dashboard.html')
+    recent_events = RecentEventsModel.objects.order_by('-id')[:50]
+    return render(request, 'dashboard/dashboard.html',{"recent_events":recent_events})
 
 def sales_chart(request):
 
@@ -143,22 +147,91 @@ def payment(request):
 
 def user_panel(request):
     users = User.objects.all()
-    print(users)
-    return render(request, 'dashboard/user_panel.html',{"users":users})
+    user_details = []
+
+    for user in users:
+        banned_user = BannedUser.objects.filter(user=user , active=True).first()
+        if banned_user and banned_user.active:
+            banned_till = banned_user.banned_till
+            banned_status = True
+        else:
+            banned_till = ""
+            banned_status = False
+        
+        user_info = {
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'date_joined': user.date_joined,
+            'is_superuser': user.is_superuser,
+            'is_staff': user.is_staff,
+            'banned': banned_status,
+            'banned_till': banned_till
+        }
+        user_details.append(user_info)
+
+    return render(request, 'dashboard/user_panel.html', {"users": user_details})
+
+
+
 
 def user_edit(request, user_id):
     user = get_object_or_404(User, id=user_id)
-    
+    banned_user = BannedUser.objects.filter(user=user, active=True).first()
+
     if request.method == 'POST':
-        print(request.POST)
-        user.first_name = request.POST.get('first_name')
-        user.last_name = request.POST.get('last_name')
-        user.email = request.POST.get('email')
-        
-        # Handle staff and superuser checkboxes
-        user.is_staff = request.POST.get('is_staff') == 'on'
-        user.is_superuser = request.POST.get('is_superuser') == 'on'
-        
+        # Update user fields
+        user.first_name = request.POST.get('first_name', user.first_name)
+        user.last_name = request.POST.get('last_name', user.last_name)
+        user.email = request.POST.get('email', user.email)
+        user.is_staff = 'is_staff' in request.POST
+        user.is_superuser = 'is_superuser' in request.POST
         user.save()
-        return redirect('user_edit', user_id=user.id) 
-    return render(request, 'dashboard/user_edit.html',{"user":user})
+
+        # Handle banning user
+        is_banned = request.POST.get('is_banned', False)
+        ban_reason = request.POST.get('reason', '')
+        banned_till = request.POST.get('till')
+
+        if is_banned:
+            if banned_till:
+                banned_till_date = timezone.datetime.strptime(banned_till, '%Y-%m-%d').date()
+            else:
+                banned_till_date = None
+
+            if banned_user:
+                # Update existing banned_user instance
+                banned_user.reason = ban_reason
+                banned_user.banned_till = banned_till_date
+                banned_user.active = True
+                banned_user.save()
+            else:
+                BannedUser.objects.create(user=user, reason=ban_reason, banned_till=banned_till_date, active=True)
+        else:
+            if banned_user:
+                banned_user.active = False
+                banned_user.save()
+
+        messages.success(request, 'User information updated successfully.')
+        return redirect('user_edit', user_id=user_id)
+
+    user_info = {
+        'id': user.id,
+        'username': user.username,
+        'email': user.email,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'date_joined': user.date_joined,
+        'is_superuser': user.is_superuser,
+        'is_staff': user.is_staff,
+        'banned': banned_user.active if banned_user else False,
+        'banned_till': banned_user.banned_till if banned_user else None,
+        'ban_reason': banned_user.reason if banned_user else None
+    }
+
+    return render(request, 'dashboard/user_edit.html', {'user': user_info})
+
+
+

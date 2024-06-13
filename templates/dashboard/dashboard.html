@@ -1,11 +1,12 @@
 {% extends 'base/header_dashboard.html' %}
 {% load static %}
+
 {% block content %}
 
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-6">
-      <div class="card">
+      <div class="card"  style="height: 505px;">
         <div class="card-header">
           Orders In Progress
         </div>
@@ -25,12 +26,28 @@
   </div>
   <div class="row mt-4">
     <div class="col-md-6">
-      <div class="card">
+      <div class="card"  style="height: 413px;">
         <div class="card-header">
           Orders Completed
         </div>
         <div class="card-body">
           <!-- Add your completed orders table here -->
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          Recent Updates
+        </div>
+        <div class="card-body" style="height: 400px; overflow-y: auto;">
+          <ul class="list-group flex-grow-1">
+            {% for update in recent_events %}
+            <li class="list-group-item">{{ update.event }} - {{ update.date }}</li>
+            {% empty %}
+            <li class="list-group-item">No recent updates</li>
+            {% endfor %}
+          </ul>
         </div>
       </div>
     </div>

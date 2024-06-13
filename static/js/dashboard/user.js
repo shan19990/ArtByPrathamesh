@@ -44,3 +44,43 @@ function handleProfileUpdateResponse(data) {
     }
 }
 
+function sortTable(header) {
+    const table = document.getElementById('userTable');
+    const tbody = table.tBodies[0];
+    const rows = Array.from(tbody.rows);
+    const field = header.getAttribute('data-field');
+    const currentSort = header.getAttribute('data-sort');
+    let newOrder = 'asc';
+
+    // Determine the new sort order
+    if (currentSort === 'asc') {
+        newOrder = 'desc';
+    }
+
+    // Clear existing sort indicators
+    document.querySelectorAll('th.sortable').forEach(th => {
+        th.removeAttribute('data-sort');
+        th.innerHTML = th.innerHTML.replace(/ ▲| ▼/, '');
+    });
+
+    // Update the header to show the current sort order
+    header.setAttribute('data-sort', newOrder);
+    header.innerHTML += newOrder === 'asc' ? ' ▲' : ' ▼';
+
+    // Sort the rows based on the clicked header
+    rows.sort((a, b) => {
+        const cellA = a.querySelector(`td:nth-child(${header.cellIndex + 1})`).innerText.toLowerCase();
+        const cellB = b.querySelector(`td:nth-child(${header.cellIndex + 1})`).innerText.toLowerCase();
+
+        if (cellA < cellB) {
+            return newOrder === 'asc' ? -1 : 1;
+        } else if (cellA > cellB) {
+            return newOrder === 'asc' ? 1 : -1;
+        } else {
+            return 0;
+        }
+    });
+
+    // Re-append the sorted rows to the tbody
+    rows.forEach(row => tbody.appendChild(row));
+}

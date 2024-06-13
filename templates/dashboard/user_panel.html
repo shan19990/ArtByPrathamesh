@@ -1,44 +1,33 @@
 {% extends 'base/header_dashboard.html' %}
-{% load socialaccount %}
 {% load static %}
 {% block content %}
 
 <style>
-    body {
-        font-family: Arial, sans-serif;
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-    }
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
-    th {
-        background-color: #f2f2f2;
+    .container {
+        width: 95%; /* Increase the container width */
+        max-width: 2500px; /* Optional: Set a max-width */
+        margin: 0 auto; /* Center the container */
     }
 </style>
 
 <div class="container">
     <h2 class="mt-5 mb-4">User Table</h2>
-
     <div class="table-responsive">
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="userTable">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Date Joined</th>
-                    <th>Superuser</th>
-                    <th>Staff</th>
+                    <th class="sortable" data-field="id" onclick="sortTable(this)">ID</th>
+                    <th class="sortable" data-field="username" onclick="sortTable(this)">Username</th>
+                    <th class="sortable" data-field="email" onclick="sortTable(this)">Email</th>
+                    <th class="sortable" data-field="first_name" onclick="sortTable(this)">First Name</th>
+                    <th class="sortable" data-field="last_name" onclick="sortTable(this)">Last Name</th>
+                    <th class="sortable" data-field="date_joined" onclick="sortTable(this)">Date Joined</th>
+                    <th class="sortable" data-field="is_superuser" onclick="sortTable(this)">Superuser</th>
+                    <th class="sortable" data-field="is_staff" onclick="sortTable(this)">Staff</th>
+                    <th class="sortable" data-field="banned" onclick="sortTable(this)">Banned</th>
+                    <th class="sortable" data-field="banned_till" onclick="sortTable(this)">Banned Till</th>
                     <th>Actions</th>
-                    <!-- Add more fields as needed -->
+                    <th>Orders</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,18 +39,21 @@
                     <td>{{ user.first_name }}</td>
                     <td>{{ user.last_name }}</td>
                     <td>{{ user.date_joined }}</td>
-                    <td>{% if user.is_superuser %} Yes {% else %} No {% endif %}</td>
-                    <td>{% if user.is_staff %} Yes {% else %} No {% endif %}</td>
+                    <td>{{ user.is_superuser }}</td>
+                    <td>{{ user.is_staff }}</td>
+                    <td>{{ user.banned }}</td>
+                    <td>{{ user.banned_till }}</td>
                     <td>
                         <a href="{% url 'user_edit' user.id %}" type="button" class="btn btn-secondary">Edit</a>
-                        <a href="#" type="button" class="btn btn-secondary">Delete</a>
                     </td>
-                    <!-- Populate remaining fields accordingly -->
+                    <td>
+                        <a href="#" class="btn btn-secondary">Orders</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
-
+<script src="{% static 'js/dashboard/user.js' %}"></script>
 {% endblock content %}
